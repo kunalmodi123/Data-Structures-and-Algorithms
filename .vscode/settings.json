@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "vector": "cpp"
+    },
+    "competitive-programming-helper.firstTime": false,
+    "C_Cpp.errorSquiggles": "Disabled",
+    "editor.fontFamily": "'Cascadia Code',consolas,'Courier New'",
+    "editor.fontLigatures": true
+}
