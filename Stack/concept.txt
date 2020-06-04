@@ -1,0 +1,15 @@
+In problems related to stack, generally an input array is given.
+
+Try to fing the brute force solution of the problem if,
+1> the time complexity is O(n^2) and
+2> the for loops are dependent for e.g,
+    for(int i = 0; i < n; i++)
+    {
+        for(int j =i+1 ; j < n;j++)
+        {
+            //code
+        }
+    }
+
+then there is a possibilty that we can use STACK and reduce the time complexity
+to about O(n)
