@@ -1,0 +1,22 @@
+You are given array of N integers where (N<=1e5)
+You have to answer Q queries where (Q<=1e5)
+In each query, you have to answer weather an element x exists in the array
+Assumption - memoory limit only allows the initial array
+
+Using Binary Search will reduce the complexity to Q*N to QlogN you are said to search an element
+from the given array Q times
+=========================================================================================================
+
+BS can be used in any MONOTONIC function,
+for e.g. say 
+    You are given an integer K (K <= 1e17), you have to find integer A and B such that,
+    A+B = K and A*B = K
+
+    So from the above equations, we can find a monotonic function f(A),
+    such that f(A) = A*(K - A) and it is monotonic in the range [0,k/2] & [k/2, k]
+    So we apply BS to any of the range and find A such that f(A) = K;
+
+Implementation is in the folder itself
+==========================================================================================================
+
+
