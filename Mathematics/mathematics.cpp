@@ -11,8 +11,8 @@ void sieveOfEratosthenes(long int n)
     {
         if (prime[i])
         {
-            for (long j = i * i; j <= n; j += i)
-                prime[j] = false;
+            for (long j = 2; i*j <= n; j++)
+                prime[i*j] = false;
         }
     }
 
