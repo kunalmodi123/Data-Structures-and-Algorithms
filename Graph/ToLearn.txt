@@ -1,0 +1,17 @@
+1. bfs/dfs
+2. cycle detection(undirected) using dfs
+3. topological sorting both bfs(kahn's algo) & dfs solution
+4. cycle detection(directed) using dfs and bfs(Kahn's Algo)
+5. shortest path (unweighted graph) using bfs
+6. shortest path in weighted DAG(directed acyclic graph) using topological sorting
+7. shortest path algo  
+    a. dijkstra algo (important)
+    b. bellman ford algo
+    c. floyd warshall algo
+8. Minimum Spanning Tree
+    a. Prim's algo
+    b. Kruksal's 
+9. Travelling Salesman problem
+10. flood fill
+11. graph coloring
+12. snake & ladder

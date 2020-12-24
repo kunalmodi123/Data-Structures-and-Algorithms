@@ -48,7 +48,7 @@ int rightMostIndex(vector<int> arr, int l, int h, int x, int n) //Array should b
 }
 
 int countOccurences(vector<int> arr, int x) //Array should be Sorted
-{
+{   
     int n = arr.size();
     int l = leftMostIndex(arr, 0, n - 1, x);
     int r = rightMostIndex(arr, 0, n - 1, x, n);

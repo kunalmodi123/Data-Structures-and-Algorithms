@@ -1,53 +1,80 @@
-#include <bits/stdc++.h>
-using namespace std;
+// C++ program to check if the word 
+// exists in the grid or not 
+#include <bits/stdc++.h> 
+using namespace std; 
+#define r 4 
+#define c 5 
 
-const int N = 1e6 + 3;
-vector<int> g[N];
+// Function to check if a word exists in a grid 
+// starting from the first match in the grid 
+// level: index till which pattern is matched 
+// x, y: current position in 2D array 
+bool findmatch(char mat[r][c], string pat, int x, int y, int nrow, int ncol, int level) 
+{ 
+    int l = pat.length(); 
 
-void addEdgeInUndirected(int u, int v)
-{
-    g[u].push_back(v);
-    g[v].push_back(u);
-}
+    // Pattern matched 
+    if (level == l) 
+        return true; 
 
-void addEdgeInDirected(int u, int v)
-{
-    g[u].push_back(v);
-}
+    // Out of Boundary 
+    if (x < 0 || y < 0 || x >= nrow || y >= ncol) 
+        return false; 
 
-void BFS(int u)
-{
+    // If grid matches with a letter while 
+    // recursion 
+    if (mat[x][y] == pat[level]) { 
 
-    vector<bool> visited(N, 0);
-    cout << "BFS for source " << u << " is : \n";
+        // Marking this cell as visited 
+        char temp = mat[x][y]; 
+        mat[x][y] = '#'; 
 
-    queue<int> q;
-    visited[u] = 1;
-    q.push(u);
+        // finding subpattern in 4 directions 
+        bool res = findmatch(mat, pat, x - 1, y, nrow, ncol, level + 1) |  
+                   findmatch(mat, pat, x + 1, y, nrow, ncol, level + 1) |  
+                   findmatch(mat, pat, x, y - 1, nrow, ncol, level + 1) |  
+                   findmatch(mat, pat, x, y + 1, nrow, ncol, level + 1); 
 
-    while (!q.empty())
-    {
-        int node = q.front();
-        cout << node << " ";
-        q.pop();
-        for (auto v : g[node])
-        {
-            if (!visited[v])
-            {
-                visited[v] = 1;
-                q.push(v);
-            }
-        }
-    }
-    cout << endl;
-}
+        // marking this cell 
+        // as unvisited again 
+        mat[x][y] = temp; 
+        return res; 
+    } 
+    else // Not matching then false 
+        return false; 
+} 
 
-int main()
-{
-    vector<string> v;
-    v.push_back("kunal");
-    v.push_back("modi");
+// Function to check if the word exists in the grid or not 
+bool checkMatch(char mat[r][c], string pat, int nrow, int ncol) 
+{ 
 
-    vector<string>::iterator it = v.begin();
-    cout << (*it)[3];
-}
+    
+
+    // Traverse in the grid 
+    for (int i = 0; i < nrow; i++) { 
+        for (int j = 0; j < ncol; j++) { 
+
+            // If first letter matches, then recur and check 
+            if (mat[i][j] == pat[0]) 
+                if (findmatch(mat, pat, i, j, nrow, ncol, 0)) 
+                    return true; 
+        } 
+    } 
+    return false; 
+} 
+// Driver Code 
+int main() 
+{ 
+    char grid[r][c] = { "abcd", 
+                        "efgh", 
+                        "ijkl", 
+                        "mnop" }; 
+
+    // Function to check if word exists or not 
+    if (checkMatch(grid, "fgk", r, c)) 
+        cout << "Yes"; 
+    else
+        cout << "No"; 
+
+return 0; 
+} 

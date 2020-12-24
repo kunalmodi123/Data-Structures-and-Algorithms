@@ -37,6 +37,10 @@ int main()
         g[v].push_back(u);
     }
 
+    DFS(1);
+    cout << "\n";
+    DFS(2);
+    cout << "\n";
     DFS(4);
     cout << "\n";
     DFS(3);
