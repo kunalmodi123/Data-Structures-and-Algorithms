@@ -15,7 +15,7 @@ There are multiple test cases in this problem.
     void dfs(vector<vector<char>>& grid,int row, int col, vector<vector<bool>>& visited, int& cnt){
         int r[] = {-1, 0, 0, 1};
         int c[] = {0, -1, 1, 0};
-        cnt++;
+        cnt++; // for area of connected components
 
         int ROW = grid.size();
         int COL = grid[0].size();

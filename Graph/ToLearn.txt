@@ -10,8 +10,11 @@
     c. floyd warshall algo
 8. Minimum Spanning Tree
     a. Prim's algo
-    b. Kruksal's 
+    b. Kruskal's 
 9. Travelling Salesman problem
 10. flood fill
 11. graph coloring
 12. snake & ladder
+
+
+also learn implementing bfs and dfs in 2d grids
