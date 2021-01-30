@@ -5,8 +5,7 @@ using namespace std;
 const int N = 1e6 + 3;
 vector<int> g[N];
 
-void BFS(int u)
-{
+void BFS(int u){
     vector<bool> visited(N, 0);
     cout << "BFS is : \n";
 
@@ -14,15 +13,12 @@ void BFS(int u)
     visited[u] = 1;
     q.push(u);
 
-    while (!q.empty())
-    {
+    while (!q.empty()){
         int node = q.front();
         cout << node << " ";
         q.pop();
-        for (auto v : g[node])
-        {
-            if (!visited[v])
-            {
+        for (auto v : g[node]){
+            if (!visited[v]){
                 visited[v] = 1;
                 q.push(v);
             }
@@ -30,12 +26,10 @@ void BFS(int u)
     }
 }
 
-int main()
-{
+int main(){
     int n, m, u, v;
     cin >> n >> m;
-    while (m--)
-    {
+    while (m--){
         cin >> u >> v;
         g[u].push_back(v);
         g[v].push_back(u);

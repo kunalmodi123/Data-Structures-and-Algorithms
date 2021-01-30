@@ -1,4 +1,4 @@
-1. bfs/dfs
+1. bfs/dfs & multisource bfs
 2. cycle detection(undirected) using dfs
 3. topological sorting both bfs(kahn's algo) & dfs solution
 4. cycle detection(directed) using dfs and bfs(Kahn's Algo)

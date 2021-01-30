@@ -11,7 +11,7 @@ bool recurse(char grid[R][C], string word, int n, int i, int r, int c){
     int l = word.length();
     if(i == l) return true;
 
-    if((r < 0) || (c < 0) || (r >= n) || (c >= n+1)) return false;
+    if((r < 0) || (c < 0) || (r >= n) || (c >= n)) return false;
 
     if(grid[r][c] == word[i]){
 
@@ -42,7 +42,7 @@ bool recurse(char grid[R][C], string word, int n, int i, int r, int c){
 
 bool findAns(char grid[R][C], string word, int n){
     for(int i=0; i<n; i++){
-        for(int j=0; i<n+1; j++){
+        for(int j=0; j<n+1; j++){
             if(grid[i][j] == word[0]){
                 if(recurse(grid, word, n, 0, i, j))
                     return true;
@@ -62,9 +62,9 @@ int main(){
         cout << endl;
     }
 
-    string word = "FGK";
+    string word = "ABCDHLP";
 
-    bool x = findAns(grid, "FGK", n);
+    bool x = findAns(grid, word, n);
     if(x) cout << "YES";
     else cout << "NO";
 }

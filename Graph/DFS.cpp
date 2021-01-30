@@ -11,10 +11,10 @@ void DFSutility(int u, vector<bool> &visited)
     cout << u << " ";
     for (auto v : g[u])
     {
-        if (visited[v])
-            continue;
-        else
-            DFSutility(v, visited);
+        if (!visited[v]) DFSutility(v, visited);
+        else{
+            // any variation
+        }
     }
 }
 

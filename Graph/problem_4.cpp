@@ -26,11 +26,11 @@ bool detectCycle(int m)
     vector<bool> visited(N, false);
     vector<bool> recSt(N, false);
 
-    for (int i = 0, i < m; i++)
+    for (int i = 0; i < m; i++)
     {
         if (!visited[i])
         {
-            if (DFSrec(i, visited, recSt == true))
+            if (DFSrec(i, visited, recSt))
                 return true;
         }
     }

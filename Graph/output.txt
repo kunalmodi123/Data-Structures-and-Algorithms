@@ -1,1 +1,2 @@
-10
+Topological Sort(using dfs): 
+5 1 2 6 4 3 

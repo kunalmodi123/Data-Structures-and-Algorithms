@@ -19,15 +19,15 @@ void igraph(int u, int v, vector<int>& inDeg){
 
 void topologicalSort(int n){
 
-    vector<int> inDeg(n, 0); // number of incoming edges in each node
-    igraph(0, 2, inDeg);
-    igraph(0, 3, inDeg);
+    vector<int> inDeg(n+1, 0); // number of incoming edges in each node
+    igraph(1, 2, inDeg);
     igraph(1, 3, inDeg);
-    igraph(1, 4, inDeg);
-    igraph(2, 3, inDeg);
+    igraph(2, 4, inDeg);
+    igraph(2, 6, inDeg);
+    igraph(5, 3, inDeg);
 
     queue<int> q;
-    for(int i=0; i<n; i++){
+    for(int i=1; i<=n; i++){
         if(inDeg[i] == 0)
             q.push(i);
     }
@@ -46,12 +46,11 @@ void topologicalSort(int n){
 }
 
 void solve(){
-    int n = 5;
+    int n = 6;
     topologicalSort(n);
 }
 
 int main(){
-    ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
 
     int t = 1;
    // cin >> t;

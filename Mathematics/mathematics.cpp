@@ -1,8 +1,10 @@
 #include <bits/stdc++.h>
 #define ll long long
 using namespace std;
+const int mod = 1000000007;
 
-const int N = 1e6;
+
+const int N = 1e5;
 vector<bool> is_prime(N + 1, true);
 vector<ll> spf(N + 1, 0); // smallest prime factor
 vector<ll> primes_list[N];
@@ -69,10 +71,9 @@ vector<bool> segmentedSieve(long long L, long long R) {
 }
 
 void process_prime_factors(){ // nlog2(n)
-    for(auto x: primes_list){
-        for(int i=1; i<=N; i++)
-            primes_list[i].clear();
-    }
+    for(int i=1; i<=N; i++)
+        primes_list[i].clear();
+
     for(int i=1; i<=N; i++){
         int d = i;
         while(d != 1){
@@ -128,6 +129,34 @@ int euclideanAlgo(int a, int b) // for calculating gcd
     return euclideanAlgo(b % a, a);
 }
 
+// modular exponentiaion
+int mpow(int base, int exp)
+{
+    base %= mod;
+    int result = 1;
+    while (exp > 0){
+        if (exp & 1)
+            result = ((ll)result * base) % mod;
+        base = ((ll)base * base) % mod;
+        exp >>= 1;
+    }
+    return result;
+}
+
+// factorial with mod
+int fact(int n) {
+  int res = 1;
+  for (int i = 1; i <= n; i++) {
+    res = res * 1ll * i % mod;
+  }
+  return res;
+}
+
+// nCr function with mod
+int nCr(int n, int k) {
+  return fact(n) * 1ll * mpow(fact(k), mod - 2) % mod * 1ll * mpow(fact(n - k), mod - 2) % mod;
+}
+
 int main()
 {
     // long int a, b;
@@ -140,13 +169,17 @@ int main()
     // ll n;
     // cin >> n;
 
-    // sieve();
-    // process_prime_factors();
+    sieve();
+    process_prime_factors();
 
-    // for(auto x: primes_list[n]) cout << x << " ";
+    for(int i=13425; i<=13475; i++){
+        cout << i << " :  ";
+        for(auto x: primes_list[i]) cout << x << " ";
+        cout << "\n";
+    }
 
-    ll l, r;
-    cin >> l >> r;
+    // ll l, r;
+    // cin >> l >> r;
 
-    vector<bool> segmented_sieve = segmentedSieve(l, r);
+    // vector<bool> segmented_sieve = segmentedSieve(l, r);
 }

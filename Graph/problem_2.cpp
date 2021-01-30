@@ -13,7 +13,7 @@ vector<int> g[N];
  // a function with vector as a return type
 vector<int> shortestDistance(int u, int n){
     vector<bool> visited(N, 0);
-    vector<int> count(n, 0); // to store the answer
+    vector<int> dist(n, 0); // to store the answer
     queue<int> q;
     visited[u] = 1;
     q.push(u);
@@ -24,14 +24,14 @@ vector<int> shortestDistance(int u, int n){
 
         for (auto v : g[node]){
             if (!visited[v]){
-                count[v] = count[node] + 1; // Only difference in BFS traversal code
+                dist[v] = dist[node] + 1; // Only difference in BFS traversal code
                 visited[v] = 1;
                 q.push(v);
             }
         }
     }
 
-    return count;
+    return dist;
 }
 
 int main(){

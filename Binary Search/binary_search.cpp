@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
 int binarySearch(vector<int> arr, int l, int h, int x) //Array should be sorted
