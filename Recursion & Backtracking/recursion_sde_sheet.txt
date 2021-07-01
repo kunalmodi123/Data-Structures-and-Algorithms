@@ -1,0 +1,184 @@
+1. Subset Sums problem
+
+// https://practice.geeksforgeeks.org/problems/subset-sums2234/1
+
+void subsetSumUtil(int ind, vector<int> arr, int N, int sum, vector<int>& ds){
+        if(ind == N){
+            ds.push_back(sum);
+            return;
+        }
+        
+        subsetSumUtil(ind + 1, arr, N, sum + arr[ind], ds);
+        subsetSumUtil(ind + 1, arr, N, sum, ds);
+    }
+
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        vector<int> subsetSum;
+        subsetSumUtil(0, arr, N, 0, subsetSum);
+        sort(subsetSum.begin(), subsetSum.end());
+        return subsetSum;
+    }
+
+2. Subsets II
+
+https://leetcode.com/problems/subsets-ii/
+
+void findSubsets(int ind, int n, vector<int>& nums, vector<vector<int>>& ans, vector<int>& ds){
+        ans.push_back(ds);
+        for(int i=ind; i<n; i++){
+            if(i != ind and nums[i] == nums[i-1]) continue; // very imp, it avoids taking duplicates
+            ds.push_back(nums[i]);
+            findSubsets(i + 1, n, nums, ans, ds);
+            ds.pop_back();
+        }
+    }
+    
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> ans;
+        int n = nums.size();
+        vector<int> ds;
+        sort(nums.begin(), nums.end());
+        findSubsets(0, n, nums, ans, ds);
+        
+        return ans;
+    }
+
+3.  Combination Sum 
+ // https://leetcode.com/problems/combination-sum/
+
+    void combinationSumUtil(int ind, vector<int>& candi, int target, vector<vector<int>>& ans, vector<int>& res){
+        if(ind == candi.size()){
+            if(target == 0)
+                ans.push_back(res);
+            return;
+        }
+        
+        if(target >= candi[ind]){
+            res.push_back(candi[ind]);
+        
+            combinationSumUtil(ind, candi, target - candi[ind], ans, res);
+            res.pop_back();
+        }
+        
+        combinationSumUtil(ind+1, candi, target, ans, res);
+    }
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> res;
+        vector<vector<int>> ans;
+        
+        combinationSumUtil(0, candidates, target, ans, res);
+        
+        return ans;
+    }
+
+4. Combination Sum II
+// https://leetcode.com/problems/combination-sum-ii/
+
+    void findSubsets(int ind, int target, vector<int>& nums, vector<vector<int>>& ans, vector<int>& ds){
+        if(target == 0){
+            ans.push_back(ds);
+            return;
+        }
+        for(int i=ind; i<nums.size(); i++){
+            if(i != ind and nums[i] == nums[i-1]) continue;
+            if(nums[i] <= target){
+                ds.push_back(nums[i]);
+                findSubsets(i + 1, target - nums[i], nums, ans, ds);
+                ds.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> ds;
+        sort(candidates.begin(), candidates.end());
+        
+        findSubsets(0, target, candidates, ans, ds);
+        
+        return ans;
+    }
+
+5. Palindrome partitioning
+  //  https://leetcode.com/problems/palindrome-partitioning/
+
+    bool isPalindrome(string s, int start, int end){
+        int l = start;
+        int r = end;
+        
+        while(l <= r){
+            if(s[l++] != s[r--])
+                return false;
+        }
+        return true;
+    }
+    
+    void partitionUtil(int ind, string s, int n, vector<vector<string>>& ans, vector<string> ds){
+        if(ind == n){
+            ans.push_back(ds);
+            return;
+        }
+        
+        for(int i=ind; i<n; i++){
+            if(isPalindrome(s, ind, i)){
+                ds.push_back(s.substr(ind, i - ind + 1));
+                partitionUtil(i+1, s, n, ans, ds);
+                ds.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ans;
+        vector<string> ds;
+        int n = s.size();
+        partitionUtil(0, s, n, ans, ds);
+        
+        return ans;
+    }
+
+6. Kth Permutation Sequence
+// https://leetcode.com/problems/permutation-sequence/
+
+    string get(int n, int k, string s, vector<int> fact, vector<int>& num){
+        if(n == 0)
+            return s;
+        
+        int ind = k/fact[n-1];
+        s += char(num[ind] + 48);
+        auto it = num.begin() + ind;
+        num.erase(it);
+        
+        return get(n-1, k%fact[n-1], s, fact, num);
+    }
+    
+    string getPermutation(int n, int k) {
+        vector<int> fact(n+1);
+        vector<int> num;
+        fact[0] = 1;
+        for(int i=1; i<=n; i++){
+            fact[i] = i*fact[i-1];
+            num.push_back(i);
+        }
+        
+        return get(n, k-1, "", fact, num);
+    }
+
+**7. generate parenthesis
+// https://leetcode.com/problems/generate-parentheses/
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        addingpar(res, "", n, 0);
+        return res;
+    }
+    void addingpar(vector<string> &v, string str, int n, int m){
+        if(n==0 && m==0) {
+            v.push_back(str);
+            return;
+        }
+        if(m > 0){ addingpar(v, str+")", n, m-1); }
+        if(n > 0){ addingpar(v, str+"(", n-1, m+1); }
+    }

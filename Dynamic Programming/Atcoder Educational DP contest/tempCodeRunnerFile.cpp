@@ -30,7 +30,7 @@ int frog_2(int n, int k){
 
     int curr_ans = 1000000009;
     for(int i=1; i<=k; i++)
-        if(n-i >= 1) curr_ans = min(curr_ans, frog_2(n-i, k) + abs(ht[n] - ht[n-i]));
+        if(n-i >= 0) curr_ans = min(curr_ans, frog_2(n-i, k) + abs(ht[n] - ht[n-i]));
 
     stored[n] = curr_ans;
     is_computed[n] = true;
@@ -39,8 +39,8 @@ int frog_2(int n, int k){
 
 int main()
 {
-    int n, k;
-    cin >> n >> k;
+    int n;
+    cin >> n;
     for(int i=1; i<=n; i++) cin >> ht[i];
 
     cout << frog_2(n, k);

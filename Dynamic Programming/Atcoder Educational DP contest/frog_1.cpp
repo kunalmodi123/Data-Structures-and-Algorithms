@@ -16,13 +16,30 @@ ll frog(int n, ll ht[])
 
     return dp[n];
 }
+
+int ht[100005], stored[100005];
+bool is_computed[100005];
+
+int frog_1(int n){
+    if(n == 1)
+        return 0;
+    
+    if(is_computed[n]) return stored[n];
+
+    int curr_ans = 1000000009;
+    curr_ans = min(curr_ans, frog_1(n-1) + abs(ht[n] - ht[n-1]));
+    if(n-2 >= 1) curr_ans = min(curr_ans, frog_1(n-2) + abs(ht[n] - ht[n-2]));
+
+    stored[n] = curr_ans;
+    is_computed[n] = true;
+    return curr_ans;
+}
+
 int main()
 {
     int n;
     cin >> n;
-    ll arr[n];
-    for(int i=0; i<n; i++) cin >> arr[i];
+    for(int i=1; i<=n; i++) cin >> ht[i];
 
-    cout << frog(n, arr);
-
+    cout << frog_1(n);
 }

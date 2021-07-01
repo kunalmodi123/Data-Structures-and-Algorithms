@@ -1,0 +1,11 @@
+1. longest common subsequence    
+2. Space optimized dp solution of lcs  
+3. longest palindromic subsequence(lps)
+4. shortest common supersequence(scs) length
+5. print lcs
+6. print scs
+7. longest repeating subsequence
+8. minimum deletions to make a string palindrome
+9. min insertions and deletions to change string a -> b
+10. string matching subsequence
+11. diff utility

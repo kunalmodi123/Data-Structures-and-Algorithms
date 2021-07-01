@@ -32,22 +32,20 @@ vector<pair<int, int>> g[N];
 // based on 0 based indexing (node initial value is 0)
 void primsAlgo(int V){ // O((V+E)logV) ~ O(ElogV) time
     priority_queue<pii, vector<pii>, greater<pii>> pq;
-    vector<int> key(V, INF); 
-    vector<bool> inMST(V, false);
-    vector<int> parent(V, -1);
-    int src = 0;
-    int res = 0;
+    vector<int> key(V+1, INF); 
+    vector<bool> inMST(V+1, false);
+    vector<int> parent(V+1, -1);
+    int src = 1;
 
     pq.push({0, src});
     key[src] = 0;
 
-    while(!pq.empty()){ // runs in V time
+  //  while(!pq.empty()){ // runs in V time
+    for(int count=0; count < V-1; count++){ // runs in V time
         int u = pq.top().second; 
-        int w = pq.top().first;
         pq.pop();
 
         inMST[u] = true;
-        res = res + w;
         for(auto x: g[u]){ // runs in E time overall
             int v = x.first;
             int weight = x.second;
@@ -59,10 +57,22 @@ void primsAlgo(int V){ // O((V+E)logV) ~ O(ElogV) time
         }
     }
 
-   // printing result and edges in the MST
-   cout << "res: " << res << "\n";
-    for(int i=1; i<V; i++)
+    for(int i=2; i<=V; i++){
         cout << parent[i] << "  -  " << i << "\n";
+    }
+
+    // finding the result i.e. all weights of minimum spanning tree
+    int res = 0;
+    for(int i=2; i<=V; i++){ // O(V + 2E)
+        int a = parent[i];
+        for(auto x: g[i]){ 
+            if(x.first == a)
+                res += x.second;
+        }
+    }
+
+    cout << res;
+
 }
 
 void solve(){

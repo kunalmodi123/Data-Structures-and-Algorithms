@@ -10,6 +10,8 @@ void printPattern(int n, string osf){
     }
 
     printPattern(n - 1, osf + '0');
+    if(osf.size() == 0)
+        printPattern(n-1, osf + '1');
     if((osf.size() !=0) && (osf[osf.size() - 1]) == '0')
         printPattern(n-1, osf + '1');
 }

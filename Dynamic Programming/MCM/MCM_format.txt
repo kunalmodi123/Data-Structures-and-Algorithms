@@ -1,0 +1,17 @@
+MCM -> string or array given
+say,
+we are given two indices i(left end index) and j(right end index)
+we have to take an index k(middle index) in between
+and break the problem into two problems
+e.g. 
+          func(i, j)
+temp ans /         \ temp ans
+    func(i, k)    func(k+1, j)
+
+then we will get temporary ans from the below subproblems and 
+then we will calculate the required answer by applying any 
+function to the temporary ans
+
+* for base case, think for the "invalid input"
+
+ 

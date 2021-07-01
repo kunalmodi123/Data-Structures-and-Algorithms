@@ -6,14 +6,15 @@ vector<int> g[N];
 
 bool DFSrec(int u, vector<bool> &visited, vector<bool> &recSt)
 {
+    
     visited[u] = true;
     recSt[u] = true;
 
     for (auto v : g[u])
     {
-        if (!visited[v] && DFSrec(v, visited, recSt);)
+        if (!visited[v] && DFSrec(v, visited, recSt))
             return true;
-        else if (recSt[u] == true)
+        else if (recSt[v] == true)
             return true;
     }
 
@@ -34,6 +35,8 @@ bool detectCycle(int m)
                 return true;
         }
     }
+
+    return false;
 }
 
 int main()

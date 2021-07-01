@@ -1,0 +1,316 @@
+1. Inorder Traversal
+
+//Iterative solution
+    vector<int> inorderTraversal(TreeNode* root) {
+        stack<TreeNode*> st;
+        TreeNode* curr = root;
+        vector<int> v;
+        while(!st.empty() || curr != NULL){
+                
+            while(curr != NULL){
+                st.push(curr);
+                curr = curr->left;
+            }
+                
+            curr = st.top();
+            st.pop();
+                
+            v.push_back(curr->val);
+                
+            curr = curr->right;
+        }
+            
+        return v;
+    }
+
+
+2. Preorder Traversal
+
+//Iterative solution
+    vector<int> preorderTraversal(TreeNode* root) {
+        if(!root) return {};
+        
+        vector<int> ans;
+        stack<TreeNode*> st;
+        st.push(root);
+        while(!st.empty()){
+            TreeNode* curr = st.top();
+            ans.push_back(curr->val);
+            st.pop();
+            
+            if(curr->right)
+                st.push(curr->right);
+            if(curr->left)
+                st.push(curr->left);
+        }
+        
+        return ans;
+    }
+
+
+3. Postorder Traversal 
+
+//Iterative solution
+
+    vector<int> postorderTraversal(TreeNode* root) {
+        if(!root) return {};
+        vector<int> ans;
+        stack<TreeNode*> st;
+        st.push(root);
+        while(!st.empty()){
+            TreeNode* curr = st.top();
+            st.pop();
+            ans.push_back(curr->val);
+            
+            if(curr->left) st.push(curr->left);
+            if(curr->right) st.push(curr->right);
+        }
+            
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+
+
+4. Left View of Binary tree
+
+    vector<int> leftSideView(TreeNode* root) {
+        if(!root) return {};
+        
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, 0});
+        map<int, vector<int>> mp;
+        while(!q.empty()){
+            pair<TreeNode*, int> p = q.front();
+            q.pop();
+            mp[p.second].push_back((p.first)->val);
+            
+            if(p.first->left) q.push({p.first->left, p.second + 1});
+            if(p.first->right) q.push({p.first->right, p.second + 1});
+        }
+                                      
+        vector<int> ans;
+        for(auto x: mp){
+            ans.push_back(x.second[]);
+        }
+                                      
+        return ans;
+    }
+
+
+5. Right view of Binary tree
+
+    vector<int> rightSideView(TreeNode* root) {
+        if(!root) return {};
+        
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, 0});
+        map<int, vector<int>> mp;
+        while(!q.empty()){
+            pair<TreeNode*, int> p = q.front();
+            q.pop();
+            mp[p.second].push_back((p.first)->val);
+            
+            if(p.first->left) q.push({p.first->left, p.second + 1});
+            if(p.first->right) q.push({p.first->right, p.second + 1});
+        }
+                                      
+        vector<int> ans;
+        for(auto x: mp){
+            int n = x.second.size();
+            ans.push_back(x.second[n-1]);
+        }
+                                      
+        return ans;
+    }
+
+
+6. bottom view of binary tree
+    vector<int> bottomView(TreeNode* root) {
+        if(!root) return {};
+        
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, 0});
+        map<int, vector<int>> mp;
+        while(!q.empty()){
+            pair<TreeNode*, int> p = q.front();
+            q.pop();
+            mp[p.second].push_back((p.first)->val);
+            
+            if(p.first->left) q.push({p.first->left, p.second - 1});
+            if(p.first->right) q.push({p.first->right, p.second + 1});
+        }
+                                      
+        vector<int> ans;
+        for(auto x: mp){
+            int n = x.second.size();
+            ans.push_back(x.second[n-1]);
+        }
+                                      
+        return ans;
+    }
+
+7. top view of binary tree
+    vector<int> bottomView(TreeNode* root) {
+        if(!root) return {};
+        
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, 0});
+        map<int, vector<int>> mp;
+        while(!q.empty()){
+            pair<TreeNode*, int> p = q.front();
+            q.pop();
+            mp[p.second].push_back((p.first)->val);
+            
+            if(p.first->left) q.push({p.first->left, p.second - 1});
+            if(p.first->right) q.push({p.first->right, p.second + 1});
+        }
+                                      
+        vector<int> ans;
+        for(auto x: mp){
+            ans.push_back(x.second[0]);
+        }
+                                      
+        return ans;
+    }
+
+
+8. level order traversal in spiral/zigzag form
+
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        if(!root) return {};
+        map<int, vector<int> > mp;
+        queue<pair<TreeNode*, int> > q;
+        q.push({root, 0});
+        while(!q.empty()){
+            pair<TreeNode*, int> x = q.front();
+            TreeNode* a = x.first;
+            int b = x.second;
+            mp[b].push_back(a->val);
+            q.pop();
+          
+            if(a->left) q.push({a->left, b+1});
+            if(a->right) q.push({a->right, b+1});
+        }
+      
+        vector<vector<int>> res;
+        for(auto x: mp){
+            vector<int> ans;
+            
+            // just change this condition to change the direction of printing of each row
+            if(x.first % 2 == 0){
+                for(int i=0; i<x.second.size(); i++)
+                        ans.push_back(x.second[i]);
+                res.push_back(ans);
+                
+            }else{
+                for(int i=x.second.size() - 1; i>=0; i--)
+                        ans.push_back(x.second[i]);
+                res.push_back(ans);
+            }
+        }
+      
+        return res;
+    }
+
+9. lca of a binary tree
+    https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root) return NULL;
+        if(root->data == p->data or root->data == q->data) return root;
+        
+        TreeNode* l = lowestCommonAncestor(root->left, p, q);
+        TreeNode* r = lowestCommonAncestor(root->right, p, q);
+        if(l and r) return root;
+        if(l) return l;
+        else return r;
+    }
+
+10. max path sum
+    // https://leetcode.com/problems/binary-tree-maximum-path-sum/submissions/
+
+    int maxPathSumUtil(TreeNode* root, int& res){
+        if(!root) return 0;
+        
+        int l = maxPathSumUtil(root->left, res);
+        int r = maxPathSumUtil(root->right, res);
+        
+        int max_single = max(max(l, r) + root->val, root->val);
+        
+        int max_top = max(max_single, l + r + root->val);
+        res = max(res, max_top);
+        
+        return max_single;
+    }
+    
+    int maxPathSum(TreeNode* root) {
+        int res = INT_MIN;
+        
+        maxPathSumUtil(root, res);
+        return res;
+        
+    }
+
+11. construct binary tree from its inorder and preorder traversal
+
+    TreeNode* buildTreeUtil(vector<int>& preorder, vector<int>& inorder, map<int, int>& mp, int strt, int end, int& preInd){
+        if(strt > end)
+            return NULL;
+        
+        int curr = preorder[preInd++];
+        TreeNode* tnode = new TreeNode(curr);
+        
+        if(strt == end)
+            return tnode;
+        
+        int inInd = mp[curr];
+        tnode->left = buildTreeUtil(preorder, inorder, mp, strt, inInd - 1, preInd); // left should be first here
+        tnode->right = buildTreeUtil(preorder, inorder, mp, inInd + 1, end, preInd);
+        
+        return tnode;
+        
+    }
+    
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        map<int, int> mp;
+        int n = inorder.size();
+        for(int i=0; i<n; i++){
+            mp[inorder[i]] = i;
+        }
+        int preInd = 0;
+        return buildTreeUtil(preorder, inorder, mp, 0, n-1, preInd);
+    }
+
+
+12. construct binary tree from its inorder and postorder traversal
+
+    TreeNode* buildTreeUtil(vector<int>& inorder, vector<int>& postorder, map<int, int>& mp, int strt, int end, int postInd){
+        if(strt > end)
+            return NULL;
+        
+        int curr = postorder[postInd];
+        postInd--;
+        TreeNode* tnode = new TreeNode(curr);
+        
+        if(strt == end)
+            return tnode;
+        
+        int inInd = mp[curr];
+        
+        tnode->right = buildTreeUtil(inorder, postorder, mp, inInd + 1, end, postInd); // right should be first here
+        tnode->left = buildTreeUtil(inorder, postorder, mp, strt, inInd - 1, postInd);
+        
+    
+        
+        return tnode;
+        
+    }
+    
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        map<int, int> mp;
+        int n = inorder.size();
+        for(int i=0; i<n; i++){
+            mp[inorder[i]] = i;
+        }
+        int postInd = n-1;
+        return buildTreeUtil(inorder, postorder, mp, 0, n-1, postInd);
+    }

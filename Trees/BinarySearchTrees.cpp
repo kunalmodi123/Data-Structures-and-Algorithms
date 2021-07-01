@@ -2,6 +2,7 @@
 using namespace std;
 
 class BST{
+    private:
         struct node{
             int data;
             node* left;
@@ -153,6 +154,88 @@ class BST{
             }
         }
 
+        bool isBST(node* root, node* &prev){
+            if(!root) return true;
+
+            if(root){
+                if(!isBST(root->left, prev)) return false;
+
+                if(prev != NULL && root->data < prev->data)
+                    return false;
+                prev = root;
+
+                if(!isBST(root->right, prev)) return false;
+            }
+
+            return true;
+        }
+
+        void inorderPre(node* root, int key, node* &ans){
+            if(!root) return;
+
+            inorderPre(root->left, key, ans);
+
+            if(root and root->data < key)
+                ans = root;
+
+            inorderPre(root->right, key, ans);
+        }
+
+        void inorderSucc(node* root, int key, node* &ans){
+            if(!root) return;
+
+            inorderSucc(root->left, key, ans);
+
+            if(root and root->data > key){
+
+                if(!ans or root->data < ans->data)
+                    ans = root;
+            }
+
+            inorderSucc(root->right, key, ans);
+        }
+
+        int lca(node* root, int u, int v){ // assuming u < v
+            if(root == NULL) return -1;
+            if(root->data >= u && root->data <= v) return root->data;
+            else if(root->data > u) return lca(root->left, u, v);
+            else return lca(root->right, u, v);
+        }
+
+        void populateInorderSucc(node* root, vector<int> &ans, int &next){
+            if(root == NULL) return;
+            populateInorderSucc(root->right, ans, next);
+            ans.push_back(next);
+            next = root->data;
+            populateInorderSucc(root->left, ans, next);
+        }
+
+        void kthLargest(node* root, int k, int& c, int& ans){
+            if(root == NULL) return;
+            kthLargest(root->right, k, c, ans);
+
+            c++;
+            if(c == k){
+                 ans = root->data;
+                 return;
+            }
+
+            kthLargest(root->left, k ,c, ans);
+        }
+
+        void kthSmallest(node* root, int k, int& c, int& ans){
+            if(root == NULL) return;
+            kthSmallest(root->left, k, c, ans);
+            
+            c++;
+            if(c == k){
+                 ans = root->data;
+                 return;
+            }
+
+            kthSmallest(root->right, k, c, ans);
+        }
+
     public:
         BST(){
             root = NULL;
@@ -199,7 +282,56 @@ class BST{
 
         int height(){
             return height(root);
-        }       
+        }
+
+        bool isBST(){
+            node* prev = NULL;
+            return isBST(root, prev);
+        }
+
+        int inorderSucc(int key){ // Inorder Successor
+            node* ans = NULL;
+            inorderSucc(root, key, ans);
+
+            if(!ans) return -1;
+            return ans->data;
+        }
+
+        int inorderPre(int key){ // Inorder Predecessor
+            node* ans = NULL;
+            inorderPre(root, key, ans);
+
+            if(!ans) return -1;
+            return ans->data;
+        }
+
+        int lca(int u, int v){
+            if(u > v) swap(u, v);
+            return lca(root, u, v);
+        }
+
+        void populateInorderSucc(){
+            vector<int> ans;
+            int next = -1;
+            inOrder(root);
+            cout << endl;
+            populateInorderSucc(root, ans, next);
+            reverse(ans.begin(), ans.end());
+            for(auto x: ans) cout << x << " ";
+            cout << endl;
+        }
+
+        int kthLargest(int k){
+            int ans = 0, c = 0;
+            kthLargest(root, k, c, ans);
+            return ans;
+        }
+        
+        int kthSmallest(int k){
+            int ans = 0, c = 0;
+            kthSmallest(root, k, c, ans);
+            return ans;
+        }
 };
 
 int main(){
@@ -216,17 +348,27 @@ int main(){
     tree.insertNode(75);
     tree.insertNode(65);
     tree.insertNode(72);
-
+  //  cout << "checkpoint 1\n";
     tree.inOrder();
     tree.preOrder();
     tree.postOrder();
     tree.levelOrder();
-    tree.deleteNode(70);
+   // tree.deleteNode(70);
     tree.levelOrder();
     tree.inOrder();
+   // cout << "checkpoint 2\n";
+
 
     cout << tree.maxElement() << " " << tree.minElement() << "\n";
     cout << "height: " << tree.height() << "\n";
+   // cout << "checkpoint 3\n";
 
-    
+    if(tree.isBST()) cout << "YES\n";
+    else cout << "NO\n";
+
+    cout << tree.inorderSucc(70) << " " << tree.inorderPre(90) << "\n";
+ //   cout << "checkpoint 4\n";
+    cout << "lca: " << tree.lca(40, 72) << "\n";
+    tree.populateInorderSucc();
+    cout << "kth smallest -- kth largest :" << tree.kthSmallest(3) << " -- " << tree.kthLargest(3);
 }
