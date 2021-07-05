@@ -8,7 +8,7 @@ using namespace std;
 // https://www.youtube.com/watch?v=oaVa-9wmpns&list=PLgUwDviBIf0rPG3Ictpu74YWBQ1CaBkm2&index=2
 // https://leetcode.com/problems/sort-colors/
 
-//Dutch National Flag Algorithm
+// Dutch National Flag Algorithm
 // Most optimal solution to sort an array of only 0s, 1s, 2s 
 void sortColors(vector<int>& nums) {
     int n = nums.size();
@@ -965,9 +965,351 @@ int subXOR(vector<int> arr, int val){
 
 //-------------------------------------------------------------------------------------------------------------------------//
 
+// 25. 3 Sum
+
+// https://www.youtube.com/watch?v=onLoX6Nhvmg&t=394s
+// https://leetcode.com/problems/3sum/
+
+// Similar steps used in 4 Sum, can be said a subproblem of 4 Sum
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        
+        vector<vector<int>> ans;
+        
+        for(int i=0; i<n; i++){
+            int l = i+1, r = n-1;
+            int target = 0 - nums[i];
+            while(l < r){
+                if(nums[l] + nums[r] < target) l++;
+                else if(nums[l] + nums[r] > target) r--;
+                else{
+                    vector<int> ds(3, -1);
+                    ds[0] = nums[i];
+                    ds[1] = nums[l];
+                    ds[2] = nums[r];
+                    
+                    ans.push_back(ds);
+                    
+                    while(l < n and nums[l] == ds[1]) l++;
+                    while(r >= 0 and nums[r] == ds[2]) r--;
+                }
+            }
+            
+            while(i+1 < n and nums[i+1] == nums[i]) i++;
+        }
+        
+        return ans;
+    }
+    // TC - O(N^2), SC - O(1)
+
+//-----------------------------------------------------------------------------------------------------------------------//
+
+// 26. Trapping Rainwater
+
+// https://www.youtube.com/watch?v=m18Hntz4go8&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=42
+// https://leetcode.com/problems/trapping-rain-water/
+
+// Better Approach:
+/*
+    - Use prefix max array to store left maximum of every element
+    - Use suffix max array to store right maximum of every element
+    - travese the element and for every element add  (min(prefMax[i], SuffMax[i]) - arr[i]) to the answer
+
+    TC - O(3N), SC - O(2N)
+    // note: we can also use stack to solve the problem(using nge and nse concepts of stack)
+    // TC and SC is very similar to the above approach
+*/
+
+// Most Optimal Approach: Two pointers
+
+    int trap(vector<int>& height) {
+        int n = height.size();
+        int leftMax = 0, rightMax = 0;
+        int l = 0, r = n-1;
+        
+        int ans = 0;
+        
+        while(l < r){
+            if(height[l] <= height[r]){
+                if(height[l] >= leftMax) leftMax = height[l];
+                else ans += leftMax - height[l]; 
+                
+                l++;
+            }
+            else{
+                if(height[r] >= rightMax) rightMax = height[r];
+                else ans += rightMax - height[r];
+                
+                r--;
+            }
+        }
+        
+        return ans;
+    }
+    // TC - O(N), SC - O(1)
+    // ***important: for intuition, better to watch the video
+
+//-------------------------------------------------------------------------------------------------------------------------//
+
+// 27. Remove duplicates from Sorted array
+
+// https://www.youtube.com/watch?v=Fm_p9lJ4Z_8&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=43
+// https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+
+    int removeDuplicates(vector<int>& nums) {
+        int l=0, r=0;
+        int n = nums.size();
+        int k = 0;
+        
+        // we take two pointers here l and r initialized to first index
+        // l pointer is moved slowly and it helps in putting unique elements one by one in correct position
+        // r pointer finds the non repeated element
+        while(r < n){
+            nums[l] = nums[r]; // putting the uniwue element in the right place
+            
+            // getting passed the duplicates
+            while(r < n and nums[l] == nums[r]) // r < n is necessary because it is possible that r reaches the value in edge case
+                r++;
+            
+            k++; // count of unique elements
+            l++; // position of unique element increased ahead
+        }
+        
+        return k;
+    }
+    // TC - O(N), SC - O(1)
+
+//------------------------------------------------------------------------------------------------------------------------//
+
+// 28. Maximum Consecutive Ones
+
+// https://www.youtube.com/watch?v=Mo33MjjMlyA&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=43
+// https://leetcode.com/problems/max-consecutive-ones/s
+
+// simple iteration and resetting the count when element is 0; 
+// also taking max everytime when count increments(when element is 1)
+    int findMaxConsecutiveOnes(vector<int>& nums) {
+        int n = nums.size();
+        
+        int cnt=0, res = 0;
+        for(int i=0; i<n; i++){
+            if(nums[i] == 0)
+                cnt = 0;
+            else{
+                cnt++;
+                res = max(res, cnt);
+            }
+        }
+        
+        return res;
+    }
+    // TC - O(N), SC - O(1)
+
+//--------------------------------------------------------------------------------------------------------------------------//
+
+// 29. N meeting in one room 
+// https://www.youtube.com/watch?v=II6ziNnub1Q&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=44 
+// https://practice.geeksforgeeks.org/problems/n-meetings-in-one-room-1587115620/1
+
+    static bool comp(pair<int, int> p1, pair<int, int> p2){
+        if(p1.second < p2.second)
+            return true;
+        else if(p1.second == p2.second){
+            if(p1.first < p2.first)
+                return true;
+        }
+        return false;
+            
+    }
+    
+    int maxMeetings(int start[], int end[], int n)
+    {
+        vector<pair<int, int>> times;
+        for(int i=0; i<n; i++){
+            times.push_back({start[i], end[i]});
+        }
+        
+        sort(times.begin(), times.end(), comp);
+        int cnt=1;
+        int x = times[0].second;
+        int y = times[1].first;
+        
+        for(int i=1; i<n; i++){
+            if(x < y){
+                cnt++;
+                x = times[i].second;
+                if(i+1 < n) y = times[i+1].first;
+            }
+            else
+                if(i+1 < n) y = times[i+1].first;
+            
+        }
+        
+        return cnt;
+    }
+    // TC - O(NlogN), SC - O(N)
+
+//-------------------------------------------------------------------------------------------------------------------------//
+
+// 30. Minimum number of platforms required for a railway
+// https://www.youtube.com/watch?v=dxVcMDI7vyI&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=45 
+// https://practice.geeksforgeeks.org/problems/minimum-platforms-1587115620/1#
+
+    int findPlatform(int arr[], int dep[], int n)
+    {
+        sort(arr, arr + n);
+        sort(dep, dep + n);
+
+        int i = 1, j = 0;
+        int plat = 1;
+        int ans = 1;
+
+        while(i < n && j < n){
+            if(arr[i] <= dep[j]){
+                plat++;
+                i++;
+            }
+            else{
+                plat--;
+                j++;
+            }
+
+            if(plat > ans)
+                ans = plat;
+        }
+
+        return ans;
+    }
+    // TC - O(NlogN), SC - O(1)
+
+//-------------------------------------------------------------------------------------------------------------------------//
+
+// 31. Job sequencing Problem 
+// https://www.youtube.com/watch?v=LjPx4wQaRIs&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=46 
+// https://practice.geeksforgeeks.org/problems/job-sequencing-problem-1587115620/1#
+
+    struct Job 
+    { 
+        int id;	 // Job Id 
+        int dead; // Deadline of job 
+        int profit; // Profit if job is over before or on deadline 
+    };
+
+    static bool comp1(Job j1, Job j2){
+        if(j1.profit > j2.profit)
+            return true;
+        return false;
+    }
+
+    vector<int> JobScheduling(Job arr[], int n) 
+    { 
+        sort(arr, arr + n, comp1);
+        int maxi = arr[0].dead;
+        for(int i=0; i<n; i++)
+            maxi = max(maxi, arr[i].dead);
+        vector<int> slot(maxi + 1, 0);
+        
+        int profit = 0, cnt = 0;
+        for(int i=0; i<n; i++){
+            for(int j = arr[i].dead; j > 0; j--){
+                if(slot[j] == 0){ // we are using slot as a hash map to chek if that dealine is already covered or not
+                    slot[j] = 1;
+                    profit += arr[i].profit;
+                    cnt++;
+                    
+                    break;
+                }
+            }
+        }
+        
+        return {cnt, profit};
+    }
+    // TC - O(NlogN), SC - O(1)
+    // here we consider the dealine slot to do the mpst profitable work cause it will open the slots before it
+    // to perform other tasks. Doing it before can have us ignore few tasks whose dealine < curr_deadline which
+    // will result to wrong answer
+
+//-------------------------------------------------------------------------------------------------------------------------//
+
+// 32. Fractional Knapsack Problem
+// https://www.youtube.com/watch?v=F_DDzYnxO14&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=48 
+// https://practice.geeksforgeeks.org/problems/fractional-knapsack-1587115620/1
+
+    struct Item{
+        int value;
+        int weight;
+    };
+
+    // we sort the array wrt value/weight ratio
+    static bool comp2(Item i1, Item i2){
+        return (((double)i1.value/i1.weight) > ((double)i2.value/i2.weight));
+    }
+
+    double fractionalKnapsack(int W, Item arr[], int n)
+    {
+        sort(arr, arr + n, comp2);
+        int i=0;
+        double sum = 0;
+        while(i < n and arr[i].weight <= W){
+            sum += arr[i].value;
+            W -= arr[i].weight;
+            i++;
+        }
+        
+        // if weight == 0 or weight > 0, then i will be < n
+        // though we ignore the condition W > 0 in the if as if W = 0, sum += ..... will anyway be 0
+        if(i < n and W > 0) sum += arr[i].value * ((double) W / arr[i].weight);
+        
+        return sum;
+    }
+    // TC - O(NlogN), SC - O(1)
+
+//-------------------------------------------------------------------------------------------------------------------------//
+
+// 33. Greedy algorithm to find minimum number of coins
+// https://www.youtube.com/watch?v=mVg9CfJvayM&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=47 
+// https://www.geeksforgeeks.org/greedy-algorithm-to-find-minimum-number-of-coins/
+
+    // all denominations of indian currency
+    int deno[] = { 1, 2, 5, 10, 20,
+               50, 100, 500, 1000 };
+
+    vector<int> minCoins(int Value){
+        int n = sizeof(deno) / sizeof(deno[0]);
+
+        sort(deno, deno + n);
+
+        vector<int> ans;
+
+        for(int i=n-1; i >= 0; i--){
+            while(deno[i] <= Value){
+                Value -= deno[i];
+                ans.push_back(deno[i]);
+            }
+        }
+
+        return ans;
+    }
+    // so, TC - O(NlogN), considering deno array can be unsorted
+    //Note: Here greedy worked because the indian denominations are such that we form any value by this process
+
+//-------------------------------------------------------------------------------------------------------------------------//
+
+// 34. Activity Selection (it is same as N meeting in one room) 
+// https://www.youtube.com/watch?v=II6ziNnub1Q&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=44 
+// https://www.geeksforgeeks.org/activity-selection-problem-greedy-algo-1/
+
+/* This problem is exactly the same problem as N meetings in the room. The logic is exactly same */
+
+//-------------------------------------------------------------------------------------------------------------------------//
 
 
+//-------------------------------------------------------------------------------------------------------------------------//
 
+//-------------------------------------------------------------------------------------------------------------------------//
+
+//-------------------------------------------------------------------------------------------------------------------------//
 
 //-------------------------------------------------------------------------------------------------------------------------//
 int main(){
