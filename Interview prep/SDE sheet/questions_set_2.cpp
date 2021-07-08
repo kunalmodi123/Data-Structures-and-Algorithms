@@ -267,6 +267,39 @@ struct ListNode {
 // https://www.youtube.com/watch?v=Of0HPkk3JgI&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=35 
 // https://leetcode.com/problems/reverse-nodes-in-k-group/
 
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(!head or k == 1) return head;
+        
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        
+        ListNode *curr = head, *nex = dummy, *pre = dummy;
+        
+        int cnt = 0;
+        while(curr != NULL){
+            curr = curr->next;
+            cnt++;
+        }
+        
+        while(cnt >= k){
+            curr = pre->next;
+            nex = curr->next;
+            
+            for(int i=1; i<k; i++){
+                curr->next = nex->next;
+                nex->next = pre->next;
+                pre->next = nex;
+                nex = curr->next;
+            }
+            
+            cnt -= k;
+            pre = curr;
+        }
+        
+        return dummy->next;
+    }
+    // TC - O(N), SC - O(1)
+    // it is a hard problem, so do watch the video for intuition and logic that how it works
 
 //-----------------------------------------------------------------------------------------------------------------------------//
 
@@ -347,6 +380,56 @@ struct ListNode {
 // https://www.youtube.com/watch?v=ysytSSXpAI0&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=37
 // https://practice.geeksforgeeks.org/problems/flattening-a-linked-list/1
 
+    struct NodeB{
+        int data;
+        struct NodeB * next;
+        struct NodeB * bottom;
+        
+        NodeB(int x){
+            data = x;
+            next = NULL;
+            bottom = NULL;
+        }
+    };
+
+    // important merge function. merged in diffrent weay than before. Do learn this too.
+    // it works fine in (merge two sorted array problem as well)
+    NodeB* merge(NodeB* a, NodeB* b){
+        NodeB *temp = new NodeB(0);
+        NodeB* res = temp;
+        
+        while(a != NULL and b != NULL){
+            if(a->data <= b->data){
+                temp->bottom = a;
+                temp = temp->bottom;
+                a = a->bottom;
+            }
+            else{
+                temp->bottom = b;
+                temp = temp->bottom;
+                b = b->bottom;
+            }
+        }
+        
+        if(a) temp->bottom = a;
+        else temp->bottom = b;
+        
+        return res->bottom;
+    }    
+    
+    
+    NodeB *flatten(NodeB *root)
+    {
+        if(root == NULL or root->next == NULL)
+            return root;
+        
+        root->next = flatten(root->next);
+        
+        root = merge(root, root->next);
+        
+        return root;
+    }
+
 //----------------------------------------------------------------------------------------------------------------------------//
 
 // 13. Rotate a Linked List
@@ -384,7 +467,753 @@ struct ListNode {
 // https://www.youtube.com/watch?v=VNf6VynfpdM&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=40
 // https://leetcode.com/problems/copy-list-with-random-pointer/
 
+    class Node {
+    public:
+        int val;
+        Node* next;
+        Node* random;
+        
+        Node(int _val) {
+            val = _val;
+            next = NULL;
+            random = NULL;
+        }
+    };
+
+    Node* copyRandomList(Node* head) {
+
+        // Step 1: Putting a copy node after every node in the original linked list
+        Node *itr = head, *front = head;
+        while(itr != NULL){
+            front = itr->next;
+            Node* node = new Node(itr->val);
+            itr->next = node;
+            node->next = front;
+            itr = itr->next->next;
+        }
+
+        // Step 2: Establish connection between the random pointers of deep copy nodes
+        itr = head;
+        while(itr != NULL){
+            if(itr->random != NULL){
+                itr->next->random = itr->random->next;
+            }
+            itr = itr->next->next;
+        }
+        
+
+        // Step 3: Seperate both the lists
+        itr= head;
+        front = head;
+        Node* pseudo_head = new Node(0);
+        Node* copy = pseudo_head;
+        
+        while(itr != NULL){
+            front = itr->next->next;
+            copy->next = itr->next;
+            itr->next = front;
+            copy = copy->next;
+            itr = itr->next;
+        }
+        
+        return pseudo_head->next;
+    }
+    // TC - O(3N) ~ O(N), SC - O(1)
 
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
+// 15. Implementation of Stacks using Arrays
+
+// https://www.youtube.com/watch?v=GYptUgnIM_I&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=69
+// https://practice.geeksforgeeks.org/problems/implement-stack-using-array/1
+
+
+    class MyStack{
+        private:
+            int arr[1000];
+            int top;
+        public:
+            MyStack(){top=-1;}
+            int pop();
+            void push(int);
+    };
+
+    //Function to push an integer into the stack.
+    void MyStack :: push(int x){
+        arr[++top] = x;
+    } // first increment top, then insert
+
+    //Function to remove an item from top of the stack.
+    int MyStack :: pop(){
+        int x;
+        if(top == -1) // when stack is empty
+            x = -1;
+        else{
+            x = arr[top];
+            top--;
+        }
+        
+        return x;
+    } 
+    // TC - O(1) for both Push and Pop operations
+
+//-----------------------------------------------------------------------------------------------------------------------------//
+
+// 16. Implemetation of Queue using Arrays
+
+// https://www.youtube.com/watch?v=M6GnoUDpqEE&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=73
+
+int arr[1000];
+int n = sizeof(arr)/sizeof(arr[0]);
+int cnt = 0;
+int front = 0, rear = 0;
+
+void push(int x){
+    if(cnt == n)
+        cout << "Queue is full!";
+    
+    arr[rear%n] = x;
+    rear++;
+    cnt++;
+}
+
+void pop(){
+    if(cnt == 0)
+        cout << "Queue is empty!";
+
+    arr[front%n] = -1;
+    front++;
+    cnt--; 
+}
+
+int top(){
+    if(cnt == 0)
+        return -1;
+    return arr[front%n];
+}
+
+//----------------------------------------------------------------------------------------------------------------------------//
+
+// 17. Implement Stack usign Queue(using single queue)
+
+// https://www.youtube.com/watch?v=jDZQKzEtbYQ&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=72
+
+class MyStackUsingQueue {
+public:
+    
+    queue<int> que;
+    /** Initialize your data structure here. */
+    MyStackUsingQueue() {
+        
+    }
+    
+    /** Push element x onto stack. */
+    void push(int x) {
+        que.push(x);
+		for(int i=0;i<que.size()-1;++i){
+			que.push(que.front());
+			que.pop();
+		}
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    int pop() {
+        int x = que.front(); 
+        que.pop(); 
+        return x; 
+    }
+    
+    /** Get the top element. */
+    int top() {
+        return que.front();
+    }
+    
+    /** Returns whether the stack is empty. */
+    bool empty() {
+        return que.size() == 0; 
+    }
+}; // TC - O(N), SC - O(N)
+
+// If asked in interview, first give the approach using TWO QUEUES
+/*
+    push(x){
+        q2.push(x);
+        while(!q1.empty()){
+            q2.push(q1.front());
+            q2.pop();
+        }
+
+        swap(q1, q2);
+    }
+
+    pop(){
+        q1.pop();
+    }
+
+    top(){
+        return q1.front();
+    }
+*/
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+// 18. Implement Queue using Stacks
+
+// https://www.youtube.com/watch?v=3Et9MrMc02A&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=74
+// https://leetcode.com/problems/implement-queue-using-stacks/submissions/
+
+    class MyQueue {
+        public:
+        /** Initialize your data structure here. */
+        stack<int> input;
+        stack<int> output;
+        
+        MyQueue() {
+            
+        }
+        
+        /** Push element x to the back of queue. */
+        void push(int x) {
+            input.push(x);
+        }
+        
+        /** Removes the element from in front of queue and returns that element. */
+        int pop() {
+            if(output.empty()){
+                while(!input.empty()){
+                    output.push(input.top());
+                    input.pop();
+                }
+            }
+            int x = output.top();
+            output.pop();
+            return x;
+        }
+        
+        /** Get the front element. */
+        int peek() {
+            if(output.empty()){
+                while(!input.empty()){
+                    output.push(input.top());
+                    input.pop();
+                }
+            }
+            
+            return (output.top());
+        }
+        
+        /** Returns whether the queue is empty. */
+        bool empty() {
+            if(input.empty() and output.empty())
+                return true;
+            return false;
+        }
+        // TC - O(1) amortized for all functions
+    };
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+// 19. Valid Parentheses
+
+// https://www.youtube.com/watch?v=wkDfsKijrZ8&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=74
+// https://leetcode.com/problems/valid-parentheses/
+
+    bool isValid(string s) {
+        stack<char> st;
+        unordered_map<char, char> mp = {{'{', '}'}, {'(', ')'}, {'[', ']'}};
+
+        for(auto it: s){
+            if(it == '{' or it == '(' or it == '[')
+                st.push(it);
+            else{
+                if(!st.empty() and mp[st.top()] == it)
+                    st.pop();
+                else
+                    return false;
+            }
+        }
+        
+        if(!st.empty()) return false;
+        return true;
+    }
+    // TC - O(N), SC - O(N)
+
+//------------------------------------------------------------------------------------------------------------------------//
+
+// 20.Next Greater Element (to both right and left)
+
+// https://www.youtube.com/watch?v=Du881K7Jtk8&t=32s
+
+vector<int> ngeRight(vector<int> arr){
+    int n = arr.size();
+    vector<int> ans(n);
+    stack<int> st;
+    
+    for(int i=n-1; i>=0; i--){
+        while(!st.empty() and st.top() <= arr[i])
+            st.pop();
+        
+        if(st.empty()) ans[i] = -1;
+        else ans[i] = st.top();
+        
+        st.push(arr[i]);
+    }
+    
+    return ans;
+}
+
+vector<int> ngeLeft(vector<int> arr){
+    int n = arr.size();
+    vector<int> ans(n);
+    stack<int> st;
+    
+    for(int i=0; i<n; i++){
+        while(!st.empty() and st.top() <= arr[i])
+            st.pop();
+        
+        if(st.empty()) ans[i] = -1;
+        else ans[i] = st.top();
+        
+        st.push(arr[i]);
+    }
+    
+    return ans;
+}
+// TC - O(N), SC - O(N)
+
+//----------------------------------------------------------------------------------------------------------------------------//
+
+// 21. Next Smaller Element (to both right and left)
+
+vector<int> nseRight(vector<int> arr){
+    int n = arr.size();
+    vector<int> ans(n);
+    stack<int> st;
+    
+    for(int i=n-1; i>=0; i--){
+        while(!st.empty() and st.top() >= arr[i])
+            st.pop();
+        
+        if(st.empty()) ans[i] = -1;
+        else ans[i] = st.top();
+        
+        st.push(arr[i]);
+    }
+    
+    return ans;
+}
+
+vector<int> nseLeft(vector<int> arr){
+    int n = arr.size();
+    vector<int> ans(n);
+    stack<int> st;
+    
+    for(int i=0; i<n; i++){
+        while(!st.empty() and st.top() >= arr[i])
+            st.pop();
+        
+        if(st.empty()) ans[i] = -1;
+        else ans[i] = st.top();
+        
+        st.push(arr[i]);
+    }
+    
+    return ans;
+}
+// TC - O(N), SC - O(N)
+
+//---------------------------------------------------------------------------------------------------------------------//
+
+// 22. LRU Cache
+
+// https://www.youtube.com/watch?v=xDEuM5qa0zg&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=77
+// https://leetcode.com/problems/lru-cache/
+
+class LRUCache {
+public:
+
+    // doubly linked-list node structure
+    class node{
+        public:
+        
+        int key;
+        int val;
+        node* next;
+        node* prev;
+        
+        node(int _key, int _val){
+            key = _key;
+            val = _val;
+            next = NULL;
+            prev = NULL;
+        }
+    };
+    
+    // nodes for initial configuration
+    node* head = new node(-1, -1);
+    node* tail = new node(-1, -1);
+    
+    int cap;
+    unordered_map<int, node* > mp;
+    
+    // initial configuration
+    LRUCache(int capacity) {
+        cap = capacity;
+        head->next = tail;
+        tail->prev = head;
+    }
+    
+    // add node next to the head pointer
+    void addnode(node* newnode){
+        node* temp = newnode;
+        temp->next = head->next;
+        head->next->prev = temp;
+        head->next = temp;
+        temp->prev = head;
+    }
+    
+    // delete node from anywhere in the DLL
+    void deletenode(node* delnode){
+        node* delnext = delnode->next;
+        node* delprev = delnode->prev;
+        
+        delnext->prev = delprev;
+        delprev->next = delnext;
+    }
+    
+    // getting the value of the corresponding key
+    int get(int _key) {
+        // if key is found,
+        // store its value into a variable;
+        // delete the node(from the hash map of the corresponding key), and remove the key from map too;
+        // add the node next to head(as it will last recently used node)
+        // return the stored value of corresponding key in the variable
+        if(mp.find(_key) != mp.end()){
+            node* resnode = mp[_key];
+            int res = resnode->val;
+            mp.erase(_key);
+            deletenode(resnode);
+            addnode(resnode);
+            mp[_key] = head->next;
+            
+            return res;
+        }
+        
+        // if key not found
+        return -1;
+    }
+    
+    void put(int _key, int value) {
+        // if key already present,
+        // remove from hash map and delete node
+        if(mp.find(_key) != mp.end()){
+            node* existingnode = mp[_key];
+            mp.erase(_key);
+            deletenode(existingnode);
+        }
+        
+        // if capacity is full, delete the Least Recently Used node(node before tail node)
+        if(mp.size() == cap){
+            mp.erase(tail->prev->key);
+            deletenode(tail->prev);
+        }
+        
+        // add node next to head
+        addnode(new node(_key, value));
+        mp[_key] = head->next; 
+    }
+};
+// TC - O(1), for both PUT and GET functions
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+// 23. Largest rectangle in histogram
+
+// https://www.youtube.com/watch?v=X0X6G-eWgQ8
+// https://leetcode.com/problems/largest-rectangle-in-histogram/submissions/
+
+    // this next smaller element functions returns the vector which gives the index of nse for every element(to right and left)
+
+    vector<int> _nseRight(vector<int> arr){
+        int n = arr.size();
+        vector<int> ans(n);
+        stack<pair<int, int>> st; // we take pair here to store index also
+
+        for(int i=n-1; i>=0; i--){
+            while(!st.empty() and st.top().first >= arr[i])
+                st.pop();
+
+            if(st.empty()) ans[i] = arr.size(); // instead of -1 we store arr.size() for right side
+            else ans[i] = st.top().second;
+
+            st.push({arr[i], i});
+        }
+
+        return ans;
+    }
+
+    vector<int> _nseLeft(vector<int> arr){
+        int n = arr.size();
+        vector<int> ans(n);
+        stack<pair<int, int>> st;
+
+        for(int i=0; i<n; i++){
+            while(!st.empty() and st.top().first >= arr[i])
+                st.pop();
+
+            if(st.empty()) ans[i] = -1;
+            else ans[i] = st.top().second;
+
+            st.push({arr[i], i});
+        }
+
+        return ans;
+    }
+    
+    int largestRectangleArea(vector<int>& heights) {
+        vector<int> nseR = _nseRight(heights);
+        vector<int> nseL = _nseLeft(heights);
+        int n = heights.size();
+        
+        int ans = 0;
+        for(int i=0; i<n; i++)
+            ans = max(ans, heights[i]*(nseR[i] - nseL[i] - 1)); // remember the formula or deduce
+        
+        return ans;
+    }
+    // TC - O(2n + 2n + n) ~ O(n), SC - O(n) 
+
+//----------------------------------------------------------------------------------------------------------------------//
+
+// 24. Sliding Window Maximum
+
+// https://leetcode.com/problems/sliding-window-maximum/
+
+//-----------------------------------------------------------------------------------------------------------------------//
+
+// 25. Implement Min Stack
+
+// Constant time and extra space solution
+class MinStack {
+public:
+    /** initialize your data structure here. */
+    stack<int> s;
+    stack<int> ss;
+    
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+        s.push(val);
+        if(ss.empty() or val <= ss.top())
+            ss.push(val);
+    }
+    
+    void pop() {
+        if(s.size() == 0)
+            return;
+        
+        int ans = s.top();
+        s.pop();
+        
+        if(ans == ss.top()) // if the popped element was the minimum element, then pop the element of ss stack also
+            ss.pop();
+    }
+    
+    int top() {
+        return s.top();
+    }
+    
+    int getMin() {
+        return ss.top();
+    }
+}; // Here ss stack will keep track of the minimum element
+
+
+//-----------------------------------------------------------------------------------------------------------------------//
+
+// 26. Rotten Oranges
+
+
+//-----------------------------------------------------------------------------------------------------------------------//
+
+// 27. Subset Sum problem
+
+// https://practice.geeksforgeeks.org/problems/subset-sums2234/1
+
+void subsetSumUtil(int ind, vector<int> arr, int N, int sum, vector<int>& ds){
+        if(ind == N){
+            ds.push_back(sum);
+            return;
+        }
+        
+        subsetSumUtil(ind + 1, arr, N, sum + arr[ind], ds);
+        subsetSumUtil(ind + 1, arr, N, sum, ds);
+    }
+
+    vector<int> subsetSums(vector<int> arr, int N)
+    {
+        // Write Your Code here
+        vector<int> subsetSum;
+        subsetSumUtil(0, arr, N, 0, subsetSum);
+        sort(subsetSum.begin(), subsetSum.end());
+        return subsetSum;
+    }
+
+// 28. Subsets II
+
+// https://leetcode.com/problems/subsets-ii/
+
+void findSubsets(int ind, int n, vector<int>& nums, vector<vector<int>>& ans, vector<int>& ds){
+        ans.push_back(ds);
+        for(int i=ind; i<n; i++){
+            if(i != ind and nums[i] == nums[i-1]) continue; // very imp, it avoids taking duplicates
+            ds.push_back(nums[i]);
+            findSubsets(i + 1, n, nums, ans, ds);
+            ds.pop_back();
+        }
+    }
+    
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> ans;
+        int n = nums.size();
+        vector<int> ds;
+        sort(nums.begin(), nums.end());
+        findSubsets(0, n, nums, ans, ds);
+        
+        return ans;
+    }
+
+//------------------------------------------------------------------------------------------------------------------------//
+
+// 29. Combination Sum 
+// https://leetcode.com/problems/combination-sum/
+
+    void combinationSumUtil(int ind, vector<int>& candi, int target, vector<vector<int>>& ans, vector<int>& res){
+        if(ind == candi.size()){
+            if(target == 0)
+                ans.push_back(res);
+            return;
+        }
+        
+        if(target >= candi[ind]){
+            res.push_back(candi[ind]);
+        
+            combinationSumUtil(ind, candi, target - candi[ind], ans, res);
+            res.pop_back();
+        }
+        
+        combinationSumUtil(ind+1, candi, target, ans, res);
+    }
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> res;
+        vector<vector<int>> ans;
+        
+        combinationSumUtil(0, candidates, target, ans, res);
+        
+        return ans;
+    }
+
+//------------------------------------------------------------------------------------------------------------------------//
+
+// 30. Combination Sum II
+// https://leetcode.com/problems/combination-sum-ii/
+
+    void findSubsets(int ind, int target, vector<int>& nums, vector<vector<int>>& ans, vector<int>& ds){
+        if(target == 0){
+            ans.push_back(ds);
+            return;
+        }
+        for(int i=ind; i<nums.size(); i++){
+            if(i != ind and nums[i] == nums[i-1]) continue;
+            if(nums[i] <= target){
+                ds.push_back(nums[i]);
+                findSubsets(i + 1, target - nums[i], nums, ans, ds);
+                ds.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> ds;
+        sort(candidates.begin(), candidates.end());
+        
+        findSubsets(0, target, candidates, ans, ds);
+        
+        return ans;
+    }
+
+//------------------------------------------------------------------------------------------------------------------------//
+
+// 31. Palindrome partitioning
+//  https://leetcode.com/problems/palindrome-partitioning/
+
+    bool isPalindrome(string s, int start, int end){
+        int l = start;
+        int r = end;
+        
+        while(l <= r){
+            if(s[l++] != s[r--])
+                return false;
+        }
+        return true;
+    }
+    
+    void partitionUtil(int ind, string s, int n, vector<vector<string>>& ans, vector<string> ds){
+        if(ind == n){
+            ans.push_back(ds);
+            return;
+        }
+        
+        for(int i=ind; i<n; i++){
+            if(isPalindrome(s, ind, i)){
+                ds.push_back(s.substr(ind, i - ind + 1));
+                partitionUtil(i+1, s, n, ans, ds);
+                ds.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ans;
+        vector<string> ds;
+        int n = s.size();
+        partitionUtil(0, s, n, ans, ds);
+        
+        return ans;
+    }
+
+//------------------------------------------------------------------------------------------------------------------------//
+
+// 32. Kth Permutation Sequence
+// https://leetcode.com/problems/permutation-sequence/
+
+    string get(int n, int k, string s, vector<int> fact, vector<int>& num){
+        if(n == 0)
+            return s;
+        
+        int ind = k/fact[n-1];
+        s += char(num[ind] + 48);
+        auto it = num.begin() + ind;
+        num.erase(it);
+        
+        return get(n-1, k%fact[n-1], s, fact, num);
+    }
+    
+    string getPermutation(int n, int k) {
+        vector<int> fact(n+1);
+        vector<int> num;
+        fact[0] = 1;
+        for(int i=1; i<=n; i++){
+            fact[i] = i*fact[i-1];
+            num.push_back(i);
+        }
+        
+        return get(n, k-1, "", fact, num);
+    }
+
+//--------------------------------------------------------------------------------------------------------------------------//
