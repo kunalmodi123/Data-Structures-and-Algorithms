@@ -40,8 +40,8 @@ struct ListNode {
 // https://www.youtube.com/watch?v=sGdwSH8RK-o&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=27
 // https://leetcode.com/problems/middle-of-the-linked-list/
 
-    // Tortoise and hare method, two pointer kindof
-    // fase moves two step, and slow move one step      
+    // Tortoise and hare method, two pointer kind of
+    // fast moves two step, and slow move one step      
     ListNode* middleNode(ListNode* head) {
         ListNode *fast = head;
         ListNode *slow = head;

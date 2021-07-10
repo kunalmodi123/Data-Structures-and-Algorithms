@@ -12,7 +12,7 @@ using namespace std;
 // Most optimal solution to sort an array of only 0s, 1s, 2s 
 void sortColors(vector<int>& nums) {
     int n = nums.size();
-    //We take toal of 3 pointers i.e, left, right and mid
+    // We take total of 3 pointers i.e, left, right and mid
     // Here we try to put all zeroes before left pointer
     // All 2s after right
     // and all 1s between left and right pointer
@@ -122,7 +122,7 @@ void mergeTwoSortedArrays(vector<int>& arr1, vector<int>& arr2){
 
     while(gap > 0){
         // comparing elements in 1st array
-        for(i = gap; i + gap < n; i++){
+        for(i = 0; i + gap < n; i++){
             if(arr1[i] > arr1[i + gap])
                 swap(arr1[i], arr1[i + gap]);
         }
@@ -259,8 +259,8 @@ int maxSubArray(vector<int>& nums) {
     void setZeroes(vector<vector<int>>& matrix) {
         int n = matrix.size();
         int m = matrix[0].size();
-        // this col variable is used to ensure that the column hashmap remains intact and also if it colum 1 elements
-        // need to changed to zero then it can be done without effecting the other places in the matrix
+        // this col variable is used to ensure that the column hashmap remains intact and also if column 1 elements
+        // need to be changed to zero, then it can be done without effecting the other places in the matrix
         int col = 1;
         
         for(int i=0; i<n; i++){
@@ -283,7 +283,7 @@ int maxSubArray(vector<int>& nums) {
             // here is where col variable comes to rescue
             if(col == 0) matrix[i][0] = 0;
         }
-    } // TC - O(N), SC - O(1)
+    } // TC - O(n*m), SC - O(1)
 
 //-------------------------------------------------------------------------------------------------------------------------------//
 
@@ -294,7 +294,7 @@ int maxSubArray(vector<int>& nums) {
 
 // The problem can have 3 variations:
 
-// 1> Finding the while pascal triangle
+// 1> Finding the whole pascal triangle
 
     vector<vector<int>> generate(int numRows) {
         vector<vector<int>> ans(numRows);
@@ -326,7 +326,7 @@ int maxSubArray(vector<int>& nums) {
 // 1     4/1   4*3/1*2   4*3*2/1*2*3   4*3*2*1/1*2*3*4
 
 //this can be done easily using a for loop
-//TC - O(N)  SC- O(N)
+//TC - O(N)  SC- O(N) or if no array used, then SC - O(1)
 
 //---------------------------------------------------------------------------------------------------------------------//
 
@@ -431,13 +431,13 @@ void countInversions(int l, int h, vector<int>& arr, int& cnt){
             if(temp > prices[i]) // keeping track of the leftmost minimal
                 temp = prices[i];
             else{
-                maxi = max(prices[i] - temp, maxi); // soring the maximum difference from the minimal we can get
+                maxi = max(prices[i] - temp, maxi); // storing the maximum difference from the minimal we can get
             }
         }
         
         return maxi;
     }
- // TC - O(N)
+ // TC - O(N), SC - O(1)
 
 //----------------------------------------------------------------------------------------------------------------------//
 
@@ -462,7 +462,7 @@ void countInversions(int l, int h, vector<int>& arr, int& cnt){
             reverse(matrix[i].begin(), matrix[i].end());
         }
     }
-    // TC: O(n*m)
+    // TC: O(n*m), SC - O(1)
 
 //------------------------------------------------------------------------------------------------------------------------//
 
@@ -501,12 +501,12 @@ void countInversions(int l, int h, vector<int>& arr, int& cnt){
         }
         return false;
     }
-    // TC - O(log(m+n))
+    // TC - O(log(m+n)), SC - O(1)
 
 // 2> row wise + column wise sorted
 // https://www.geeksforgeeks.org/search-in-row-wise-and-column-wise-sorted-matrix/
 
-// we star from top-right corner of matrix;
+// we start from top-right corner of matrix;
 // if the value is greater than target, we move to left (as we have smaller elements in left than the current element);
 // if the value is smaller than target, we move down (as we have larger elements in down than the current element);
 // if found the target, return true;
@@ -561,7 +561,8 @@ void countInversions(int l, int h, vector<int>& arr, int& cnt){
 
         /// else the calculated answer
         return ans;
-    }// TC - O(logN)
+    }
+    // TC - O(logN), SC - O(1)
 
 //-------------------------------------------------------------------------------------------------------------------------//
 
@@ -640,6 +641,7 @@ void countInversions(int l, int h, vector<int>& arr, int& cnt){
     }
     // TC - O(N), SC - O(1)
     // watch the video above for intuition(important)
+    
 //-------------------------------------------------------------------------------------------------------------------------//
 
 // 17. Grid Unique Paths
@@ -1321,7 +1323,7 @@ double NthRoot(double num, int n){
     double high = num;
     double eps = 1e-6;
     
-    while(high - low > 1e-6){
+    while(high - low > eps){
         double mid = (low + high)/2.0;
         
         if(multiply(mid, n) < num)
@@ -1363,7 +1365,7 @@ int findMedian(vector<vector<int>>& nums){
     int high = 1e9;
     
     while(low <= high){
-        int mid = (low + high) >> 2;
+        int mid = (low + high) >> 1;
 
         // count the numbers less than equal to mid
         int cnt = 0;
@@ -1386,6 +1388,7 @@ int findMedian(vector<vector<int>>& nums){
 // 37. Find the element that appears once in sorted array, and rest element appears twice (Binary search) 
 
 // https://www.youtube.com/watch?v=PzszoiY5XMQ&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=62
+// https://leetcode.com/problems/single-element-in-a-sorted-array/
 
     int singleNonDuplicate(vector<int>& nums) {
         // if we dont want this edge case to be written then we change the high = nums.size() - 2
@@ -1417,6 +1420,7 @@ int findMedian(vector<vector<int>>& nums){
 // 38. Search element in a sorted and rotated array/ find pivot where it is rotated
 
 // https://www.youtube.com/watch?v=r3pMQ8-Ad5s&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=63
+// https://leetcode.com/problems/search-in-rotated-sorted-array/
 
     int search(vector<int>& nums, int target) {
         int low = 0, high = nums.size()-1;
@@ -1463,7 +1467,8 @@ int findMedian(vector<vector<int>>& nums){
         while(low <= high){
             
             int cut1 = (low + high) >> 1;
-            int cut2 = (n1 + n2 + 1)/2 - cut1;
+            int cut2 = (n1 + n2 + 1)/2 - cut1; // we cannot write here (n1 + n2) because it will not take care of the
+            // the condition where (n1 + n2) is odd. Eventually we iwll get smaller vallue of cnt2 hence smaller window
             
             int l1 = (cut1 == 0)?(INT_MIN):(nums1[cut1-1]);
             int l2 = (cut2 == 0)?(INT_MIN):(nums2[cut2-1]);
@@ -1504,7 +1509,8 @@ int findMedian(vector<vector<int>>& nums){
             return kthElement(arr2, arr1, m, n, k);
         
         // IMP: edge cases in the value of low and high
-        int low = max(0, k-m), high = min(k, n);
+        int low = max(0, k-m); // say we have the value of k > m, then atleast k-m elements should be taken from first array
+        int high = min(k, n); //say if k < n, then atmost k elements can be taken from first array
         
         while(low <= high){
             int cut1 = (low + high) >> 1;
@@ -1533,7 +1539,119 @@ int findMedian(vector<vector<int>>& nums){
 
 //-------------------------------------------------------------------------------------------------------------------------//
 
+// 41. Allocate minimum number of pages
 
+// https://www.youtube.com/watch?v=gYmWHvRHu-s&list=PLgUwDviBIf0qYbL4TBaEWgb-ljVdhkM7R&index=8
+// https://www.geeksforgeeks.org/allocate-minimum-number-pages/
+
+    int isPossible(vector<int> &A, int pages, int students) {
+        int cnt = 0;
+        int sumAllocated = 0; 
+        for(int i = 0;i<A.size();i++) {
+            if(sumAllocated + A[i] > pages) {
+                cnt++; 
+                sumAllocated = A[i];
+                if(sumAllocated > pages) return false; 
+            }
+            else {
+                sumAllocated += A[i];
+            }
+        }
+        if(cnt < students) return true; // cnt < students, because one student will not be counted in the end
+        return false; 
+    }
+
+    int AllocatedBooks(vector<int> &A, int B) {
+        if(B > A.size()) return -1; 
+
+        int low = A[0]; 
+        int high = 0;
+
+        for(int i = 0;i<A.size();i++) {
+            high = high + A[i]; 
+            low = min(low, A[i]); 
+        }
+
+        int res = -1; 
+        while(low <= high) {
+            int mid = (low + high) >> 1; 
+            //cout << low << " " << high << " " << mid << endl; 
+            if(isPossible(A, mid, B)) {
+                res = mid; 
+                high = mid - 1; 
+            }
+            else {
+                low = mid + 1; 
+            }
+        }
+        // return res -> this is also correct
+        return low; 
+    }
+    // TC - O(NlogN), SC - O(1)
+
+//---------------------------------------------------------------------------------------------------------------------------//
+
+// 42. Aggressive Cows(SPOJ)
+
+// https://www.youtube.com/watch?v=wSOfYesTBRk&list=PLgUwDviBIf0qYbL4TBaEWgb-ljVdhkM7R&index=9
+// https://www.spoj.com/problems/AGGRCOW/
+
+    bool isPossible(vector<int>& a, int n, int cows, int minDist) {
+        int cntCows = 1; 
+        int lastPlacedCow = a[0];
+        for(int i = 1;i<n;i++) {
+            if(a[i] - lastPlacedCow >= minDist) {
+                cntCows++;
+                lastPlacedCow = a[i]; 
+            }
+        }
+        if(cntCows >= cows) return true;
+        return false; 
+    }
+
+    void AggressiveCows(){
+        int t;
+        cin >> t;
+        while(t--) {
+            int n, cows;
+            cin >> n >> cows;
+            vector<int> a(n);
+            int ans = 0;
+            for(int i = 0;i<n;i++) cin >> a[i]; 
+            sort(a.begin(), a.end()); 
+
+            int low = 1, high = a[n-1] - a[0]; 
+
+            while(low <= high) {
+                int mid = (low + high) >> 1; 
+
+                if(isPossible(a,n,cows,mid)) {
+                    ans = mid;
+                    low = mid + 1;
+                }
+                else {
+                    high = mid - 1; 
+                }
+            }
+            cout << ans << "\n";
+        }
+    }
+    // TC - O(NlogN), SC - O(1)
+
+//---------------------------------------------------------------------------------------------------------------------------//
 int main(){
 
 }
+
+/*
+to practice in leetcode:
+
+1482 Minimum Number of Days to Make m Bouquets
+1283 Find the Smallest Divisor Given a Threshold
+1231 Divide Chocolate
+1011 Capacity To Ship Packages In N Days
+875 Koko Eating Bananas Minimize 
+774 Max Distance to Gas Station
+410 Split Array Largest Sum
+
+*/
