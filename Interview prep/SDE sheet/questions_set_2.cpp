@@ -126,7 +126,6 @@ struct ListNode {
 
 // solves the problem in only one iteration
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        // we take two pointer, f and s
         ListNode *f = head, *s = head;
         
         // we move f to n places forward
@@ -303,7 +302,7 @@ struct ListNode {
 
 //-----------------------------------------------------------------------------------------------------------------------------//
 
-// 10. Check if LInked List Palindrome or not
+// 10. Check if Linked List Palindrome or not
 
 // https://www.youtube.com/watch?v=-DtNInqFUXs&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=36
 // https://leetcode.com/problems/palindrome-linked-list/submissions/
@@ -418,8 +417,7 @@ struct ListNode {
     }    
     
     
-    NodeB *flatten(NodeB *root)
-    {
+    NodeB *flatten(NodeB *root){
         if(root == NULL or root->next == NULL)
             return root;
         
@@ -429,6 +427,7 @@ struct ListNode {
         
         return root;
     }
+    // TC - O(summation of all nodes)
 
 //----------------------------------------------------------------------------------------------------------------------------//
 
@@ -468,16 +467,16 @@ struct ListNode {
 // https://leetcode.com/problems/copy-list-with-random-pointer/
 
     class Node {
-    public:
-        int val;
-        Node* next;
-        Node* random;
-        
-        Node(int _val) {
-            val = _val;
-            next = NULL;
-            random = NULL;
-        }
+        public:
+            int val;
+            Node* next;
+            Node* random;
+            
+            Node(int _val) {
+                val = _val;
+                next = NULL;
+                random = NULL;
+            }
     };
 
     Node* copyRandomList(Node* head) {
@@ -595,7 +594,7 @@ int top(){
 
 //----------------------------------------------------------------------------------------------------------------------------//
 
-// 17. Implement Stack usign Queue(using single queue)
+// 17. Implement Stack using Queue(using single queue)
 
 // https://www.youtube.com/watch?v=jDZQKzEtbYQ&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=72
 
@@ -739,7 +738,7 @@ public:
     }
     // TC - O(N), SC - O(N)
 
-//------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------//
 
 // 20.Next Greater Element (to both right and left)
 
@@ -990,6 +989,32 @@ public:
 
 // https://leetcode.com/problems/sliding-window-maximum/
 
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        deque<int> dq;
+        vector<int> ans;
+        
+        // here, in deque, we will maintain an descending order of elements
+        // front element of deque will be maximum element in bounds
+        for(int i=0; i<(int)nums.size(); i++){
+            // removing the out of bound element
+            if(!dq.empty() and dq.front() == i-k)
+                dq.pop_front();
+            
+            // removing all the smaller elements compared to the current element from backside of the list
+            while(!dq.empty() and nums[dq.back()] < nums[i])
+                dq.pop_back();
+            
+            dq.push_back(i);
+
+            // for the base window
+            if(i >= k-1) ans.push_back(nums[dq.front()]);
+        }
+        
+        return ans;
+    }
+    // TC - O(N) + O(N) ~ O(N)
+    // SC - O(N)
+
 //-----------------------------------------------------------------------------------------------------------------------//
 
 // 25. Implement Min Stack
@@ -1049,8 +1074,8 @@ void subsetSumUtil(int ind, vector<int> arr, int N, int sum, vector<int>& ds){
             return;
         }
         
-        subsetSumUtil(ind + 1, arr, N, sum + arr[ind], ds);
-        subsetSumUtil(ind + 1, arr, N, sum, ds);
+        subsetSumUtil(ind + 1, arr, N, sum + arr[ind], ds); // pick 
+        subsetSumUtil(ind + 1, arr, N, sum, ds); // non-pick
     }
 
     vector<int> subsetSums(vector<int> arr, int N)
@@ -1075,7 +1100,7 @@ void findSubsets(int ind, int n, vector<int>& nums, vector<vector<int>>& ans, ve
             ds.pop_back();
         }
     }
-    
+
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         vector<vector<int>> ans;
         int n = nums.size();
@@ -1217,3 +1242,37 @@ void findSubsets(int ind, int n, vector<int>& nums, vector<vector<int>>& ans, ve
     }
 
 //--------------------------------------------------------------------------------------------------------------------------//
+
+// 33. 
+
+
+void printPermutations(int ind, vector<vector<int>>& ans, vector<int>& ds, vector<int>& nums, map<int, int> &mpp, int n){
+    if(ind == n){
+        ans.push_back(ds);
+        return;
+    }
+
+    for(int i=0; i<n; i++){
+        
+        if(!mpp[i]){
+            mpp[i] = 1;
+            ds.push_back(nums[i]);
+
+            printPermutations(ind+1, ans, ds, nums, mpp, n);
+
+            mpp[i] = 0;
+            ds.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> ds;
+        int n = nums.size();
+        map<int, int> mpp;
+        sort(nums.begin(), nums.end());
+        printPermutations(0, ans, ds, nums, mpp, n);
+        
+        return ans;
+    }

@@ -15,8 +15,8 @@
        
        return ans;
     }
-
-2. lis using binary search  O(NlogN)
+    
+2. lis using binary search O(NlogN)
 
     int longestSubsequence(int n, int a[])
     {
@@ -32,4 +32,3 @@
        
        return lis.size();
     }
-

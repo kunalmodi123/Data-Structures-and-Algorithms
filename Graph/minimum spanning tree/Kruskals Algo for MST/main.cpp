@@ -28,6 +28,8 @@ void Union(int u, int v, vector<int>& par, vector<int>& rank){
     u = get(par, u);
     v = get(par, v);
 
+    if(u == v) return;
+
     if(rank[u] < rank[v])
         par[u] = v;
     else if(rank[v] < rank[u])
@@ -51,7 +53,7 @@ bool comp(node n1, node n2){
     return (n1.wt < n2.wt);
 }
 
-void kruskalsAlgo(){
+void kruskalsAlgo(){ 
     vector<node> edges;
     vector<pair<int, int>> mst;
 
@@ -63,7 +65,7 @@ void kruskalsAlgo(){
         edges.push_back(node(u, v, w));
     }
     
-    sort(edges.begin(), edges.end(), comp);
+    sort(edges.begin(), edges.end(), comp); // mlogm , m = edges
 
     vector<int> par(N+1);
     vector<int> rank(N+1, 0);
@@ -72,6 +74,7 @@ void kruskalsAlgo(){
     }
 
     int cost = 0;
+    // m*4*a
     for(auto it: edges){
         if(get(par, it.u) != get(par, it.v)){
             cost += it.wt;

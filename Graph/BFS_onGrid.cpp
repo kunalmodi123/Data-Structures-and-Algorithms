@@ -27,56 +27,54 @@ const int mod = 1e9+7;
 const int N = 2e5;
 /****************************************************************/
 
-int bfs(vector<vector<int>>& grid,int i, int j){
-    int cnt = 0;
-    int R = grid.size();
-    int C = grid[0].size();
-    int rows[] = {-1, 1, 0, 0};
-    int cols[] = {0, 0, -1, 1};
+    struct node{
+        int dist, r, c;
+        node(int _r, int _c, int _dist){
+            r = _r;
+            c = _c;
+            dist = _dist;
+        }
+    };
+    
+    int maxDistance(vector<vector<int>>& grid) {
+        int R = grid.size();
+        int C = grid[0].size();
+        int rows[] = {-1, 1, 0, 0};
+        int cols[] = {0, 0, -1, 1};
 
-    vector<vector<bool>> visited(R, vector<bool>(C, false));
-    visited[i][j] = true;
-    queue<pii> q;
-    q.push({i, j});
-    while(!q.empty()){
-        pii node = q.front();
-        q.pop();
-        int x = node.first;
-        int y = node.second;
+        vector<vector<bool>> visited(R, vector<bool>(C, false));
+        queue<node> q;
+        for(int i=0; i<R; i++){
+            for(int j=0; j<C; j++){
+                if(grid[i][j] == 1){
+                    q.push(node(i, j, 0));
+                    visited[i][j] = 1;
+                 }
+            }
+        }
+        
+        int ans = 0;
+        while(!q.empty()){
+            int dist = q.front().dist;
+            int x = q.front().r;
+            int y = q.front().c;
+            q.pop();
 
-        for(int k=0; k<4; k++){
-            int r = x + rows[k];
-            int c = y + cols[k];
-            if((r >= 0) && (r < R) && (c >= 0) && (c < C) && !visited[r][c]){
-                visited[r][c] = true;
-                if(grid[r][c] == 1){
-                    cnt = abs(i - r) + abs(j - c);
-                    return cnt;
+            for(int k=0; k<4; k++){
+                int r = x + rows[k];
+                int c = y + cols[k];
+                if((r >= 0) && (r < R) && (c >= 0) && (c < C) && !visited[r][c] && grid[r][c] == 0){
+                    visited[r][c] = true;
+                    ans = max(ans, dist + 1);
+                    q.push(node(r, c, dist + 1));
                 }
-                q.push({r, c});
             }
         }
+        
+        if(ans == 0)
+            return -1;
+        return ans;
     }
-
-    return -1;
-}
-
-int solve(vector<vector<int>>& grid){
-
-    int ans = 0;
-    int R = grid.size();
-    int C = grid[0].size();
-    for(int i=0; i<R; i++){
-        for(int j=0; j<C; j++){
-            if(grid[i][j] == 0){
-                int cnt = bfs(grid, i, j);
-                ans = max(cnt, ans);
-            }
-        }
-    }
-
-    return ans;
-}
 
 int main(){
      #ifndef ONLINE_JUDGE
@@ -91,6 +89,6 @@ int main(){
             cin >> grid[i][j];
     }
 
-    int ans = solve(grid);
+    int ans = maxDistance(grid);
     cout << ans;
 }

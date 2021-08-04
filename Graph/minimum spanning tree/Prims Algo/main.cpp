@@ -29,9 +29,9 @@ const int N = 2e5;
 
 vector<pair<int, int>> g[N];
 
-// based on 0 based indexing (node initial value is 0)
+// based on 1 based indexing (node initial value is 1)
 void primsAlgo(int V){ // O((V+E)logV) ~ O(ElogV) time
-    priority_queue<pii, vector<pii>, greater<pii>> pq;
+    priority_queue<pii, vector<pii>, greater<pii>> pq; // min heap
     vector<int> key(V+1, INF); 
     vector<bool> inMST(V+1, false);
     vector<int> parent(V+1, -1);

@@ -48,7 +48,7 @@ bool cycleDetect(int n){
         }
         count++; // extra
     }
-
+    cout << count << " " << n;
     return (count != n);
 }
 

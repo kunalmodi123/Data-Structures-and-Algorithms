@@ -37,7 +37,6 @@ bool recurse(char grid[R][C], string word, int n, int i, int r, int c){
     {
         return false;
     }
-    
 }
 
 bool findAns(char grid[R][C], string word, int n){

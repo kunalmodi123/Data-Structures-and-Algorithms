@@ -96,6 +96,35 @@
         return ans;
     }
 
+    // better solution with O(1) except recursion call stack
+    void leftViewUtil(vector<int>&vec,struct Node *root, int level,int *max_level)
+    {
+        //if root is null, we simply return.
+        if (root==NULL)  return;
+        
+        //if this is the first node of its level then it is in the left view.
+        if (*max_level < level)
+        {
+            //storing data of current node in list.
+            vec.push_back(root->data);
+            *max_level = level;
+        }
+        
+        //calling function recursively for left and right subtrees of current node. 
+        leftViewUtil(vec,root->left, level+1, max_level);
+        leftViewUtil(vec,root->right, level+1, max_level);
+    }
+
+    //Function to return a list containing elements of left view of the binary tree.
+    vector<int> leftView(struct Node *root)
+    {
+        int max_level = 0;
+        vector<int> vec;
+        leftViewUtil(vec,root, 1, &max_level);
+        //returning the list.
+        return vec;
+    }
+
 
 5. Right view of Binary tree
 
@@ -121,6 +150,35 @@
         }
                                       
         return ans;
+    }
+
+    // better solution with O(1) except recursion call stack
+    void rightViewUtil(vector<int> &vec,struct Node *root,int level,int *max_level)
+    {
+        //if root is null, we simply return.
+        if (root==NULL)  return;
+    
+         //if this is the last node of its level then it is in the right view.
+        if (*max_level < level)
+        {
+            vec.push_back(root->data);
+            *max_level = level;
+        }
+    
+        //calling function recursively for right and left 
+        //subtrees of current node.
+        rightViewUtil(vec, root->right, level+1, max_level);
+        rightViewUtil(vec, root->left, level+1, max_level);
+    }
+    
+    //Function to return list containing elements of right view of binary tree.
+    vector<int> rightView(struct Node *root)
+    {
+        int max_level = 0;
+        vector<int> vec;
+        rightViewUtil(vec,root, 1, &max_level);
+        //returning the list.
+        return vec;
     }
 
 
@@ -226,7 +284,7 @@
     }
 
 10. max path sum
-    // https://leetcode.com/problems/binary-tree-maximum-path-sum/submissions/
+    // https://leetcode.com/problems/binary-tree-maximum-path-sum/
 
     int maxPathSumUtil(TreeNode* root, int& res){
         if(!root) return 0;
@@ -313,4 +371,20 @@
         }
         int postInd = n-1;
         return buildTreeUtil(inorder, postorder, mp, 0, n-1, postInd);
+    }
+
+13. flatten binary tree to linked list
+
+// https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+
+    TreeNode* prev = NULL;
+    void flatten(TreeNode* root) {
+        if(root == NULL)
+            return;
+        
+        flatten(root->right);
+        flatten(root->left);
+        root->right = prev;
+        root->left = NULL;
+        prev = root;
     }

@@ -12,8 +12,13 @@ class BST{
                 left = NULL;
                 right = NULL;
             }
+            node(int data){
+                this->data = data;
+                left = NULL;
+                right = NULL;
+            }
         };
-
+    
         node* root;
 
         node* createNode(int data){

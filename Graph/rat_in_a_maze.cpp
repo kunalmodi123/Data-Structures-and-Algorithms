@@ -4,10 +4,10 @@
 
 Example 1:
 
-Input: N = 4, m[][] = {{1, 0, 0, 0},
-                       {1, 1, 0, 1}, 
-                       {1, 1, 0, 0},
-                       {0, 1, 1, 1}}
+Input: N = 4, m[][] =  {{1, 0, 0, 0},
+                        {1, 1, 0, 1}, 
+                        {1, 1, 0, 0},
+                        {0, 1, 1, 1}}
 Output: DDRDRR DRDDRR
 Explanation: The rat can reach the 
 destination at (3, 3) from (0, 0) by two 

@@ -11,7 +11,7 @@ void dfs(int node, int par, int& f){
     vis[node] = true;
     stk.push(node);
     for(auto it: adj[node]){
-        if(f == 1) continue; // to stop and not colecting other cycles since we  got one
+        if(f == 1) continue; // to stop and not colecting other cycles since we got one
         if(!vis[it])
             dfs(it, node, f);
         else if(it != par){

@@ -39,8 +39,8 @@ void bellmanFord(){
     vector<int> dist(n, inf);
     dist[0] = 0;
 
-    for(int i=0; i<n-1; i++){
-        for(auto it: edges){
+    for(int i=0; i<n-1; i++){ 
+        for(auto it: edges){ // relaxation operation (done n - 1 times)
             if(dist[it.v] > dist[it.u] + it.wt)
                 dist[it.v] = dist[it.u] + it.wt;
         }

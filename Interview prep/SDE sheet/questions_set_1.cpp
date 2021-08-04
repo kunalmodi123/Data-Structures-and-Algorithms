@@ -29,7 +29,6 @@ void sortColors(vector<int>& nums) {
             swap(nums[mid], nums[r--]);
         }
     }
-
 } // T.C - O(N)
   // S.C - O(1)
 
@@ -593,7 +592,7 @@ void countInversions(int l, int h, vector<int>& arr, int& cnt){
     // for intuition do watch the video above(important)
 
     //in this problem, it was guaranteed than there was a majority element, but if it is not
-    // then we traverse the array and count the aoccurences of the candidate we got
+    // then we traverse the array and count the occurences of the candidate we got
     // if the count > n/2, then it is the answer, otherwise there is no answer
 
 //-------------------------------------------------------------------------------------------------------------------------//
@@ -718,7 +717,6 @@ void countInversions(int l, int h, vector<int>& arr, int& cnt){
         reversePairs(l, mid, arr, k, cnt);
         reversePairs(mid+1, r, arr, k, cnt);
         int left = l;
-        long long one = 1;
 
         // at this point, left half and right half of the array is sorted
         for(int right = mid+1; right <= r; right++){ // O(N)
@@ -1068,7 +1066,7 @@ int subXOR(vector<int> arr, int val){
         // l pointer is moved slowly and it helps in putting unique elements one by one in correct position
         // r pointer finds the non repeated element
         while(r < n){
-            nums[l] = nums[r]; // putting the uniwue element in the right place
+            nums[l] = nums[r]; // putting the unique element in the right place
             
             // getting passed the duplicates
             while(r < n and nums[l] == nums[r]) // r < n is necessary because it is possible that r reaches the value in edge case
@@ -1227,8 +1225,8 @@ int subXOR(vector<int> arr, int val){
         
         return {cnt, profit};
     }
-    // TC - O(NlogN), SC - O(1)
-    // here we consider the dealine slot to do the mpst profitable work cause it will open the slots before it
+    // TC - O(N^2), SC - O(1)
+    // here we consider the dealine slot to do the most profitable work cause it will open the slots before it
     // to perform other tasks. Doing it before can have us ignore few tasks whose dealine < curr_deadline which
     // will result to wrong answer
 
@@ -1274,8 +1272,7 @@ int subXOR(vector<int> arr, int val){
 // https://www.geeksforgeeks.org/greedy-algorithm-to-find-minimum-number-of-coins/
 
     // all denominations of indian currency
-    int deno[] = { 1, 2, 5, 10, 20,
-               50, 100, 500, 1000 };
+    int deno[] = {1, 2, 5, 10, 20, 50, 100, 500, 1000};
 
     vector<int> minCoins(int Value){
         int n = sizeof(deno) / sizeof(deno[0]);
@@ -1294,11 +1291,12 @@ int subXOR(vector<int> arr, int val){
         return ans;
     }
     // so, TC - O(NlogN), considering deno array can be unsorted
-    //Note: Here greedy worked because the indian denominations are such that we form any value by this process
+    // Note: Here greedy worked because the indian denominations are such that we form any value by this process
 
 //-------------------------------------------------------------------------------------------------------------------------//
 
-// 34. Activity Selection (it is same as N meeting in one room) 
+// 34. Activity Selection (it is same as N meeting in one room)
+
 // https://www.youtube.com/watch?v=II6ziNnub1Q&list=PLgUwDviBIf0p4ozDR_kJJkONnb1wdx2Ma&index=44 
 // https://www.geeksforgeeks.org/activity-selection-problem-greedy-algo-1/
 
@@ -1353,7 +1351,8 @@ int countLessThanEqualToMid(vector<int>& row, int val){
     }
     
     return low;
-} // O(logN)
+} 
+// O(logN)
 // this function is similar to the upper_bound() function
 
 int findMedian(vector<vector<int>>& nums){

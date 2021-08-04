@@ -30,12 +30,18 @@ int countSubsetSum(int arr[], int n, int sum)
     return t[n][sum];
 }
 
+
 int answerCount(int arr[], int n, int diff)
 {
     int sumArr = 0;
     for (int i = 0; i < n; i++)
         sumArr += arr[i];
 
+    // sum1 + sum2 = totalSum ------------ 1
+    // sum1 - sum2 = diff --------------2
+    // 1 + 2,
+    // 2*sum1 = diff + totalSum
+    // => sum1 = (diff + totalSum)/2; //
     int sum = (diff + sumArr) / 2;
 
     return countSubsetSum(arr, n, sum);
